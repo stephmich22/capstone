@@ -25,8 +25,15 @@
 
 // AUTHENTICATION FUNCTIONS -----------------------------------------------
 
+//check credentials
+
+
 
 //ACCOUNT FUNCTIONS & SQL STATEMENTS --------------------------------------
+
+//create new account
+
+//edit account info
 
 
 
