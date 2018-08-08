@@ -30,7 +30,7 @@ function getCats($db, $sessionUser_id) {
 		die("There was a problem retrieving categories.");
 	}
 }
-//add new category
+//add new category ..
 function addCategory($db, $catName, $sessionUser_id) {
 	try {
 		$sql = $db->prepare("INSERT INTO categories VALUES(NULL, '$catName', $sessionUser_id, NOW())");
