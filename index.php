@@ -16,9 +16,15 @@
 require_once("db.php");
 require_once("functions.php");
 
+$card_id = filter_input(INPUT_GET, 'card_id', FILTER_VALIDATE_INT) ?? filter_input(INPUT_POST, 'card_id', FILTER_VALIDATE_INT) ?? null;
+$editCat_id = filter_input(INPUT_GET, 'editCat_id', FILTER_VALIDATE_INT) ?? filter_input(INPUT_POST, 'editCat_id', FILTER_VALIDATE_INT) ?? null;
+$c_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) ?? filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT) ?? null;
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING) ??
     filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) ?? NULL;
-	
+$question = filter_input(INPUT_POST, 'question', FILTER_SANITIZE_STRING) ?? "";
+$answer = filter_input(INPUT_POST, 'answer', FILTER_SANITIZE_STRING) ?? "";
+
+
 //login stuff
 $email = filter_input(INPUT_GET, 'email', FILTER_SANITIZE_STRING) ??
     filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING) ?? NULL;
@@ -30,11 +36,12 @@ $suName = filter_input(INPUT_POST, 'suName', FILTER_SANITIZE_STRING) ?? NULL;
 $suEmail = filter_input(INPUT_POST, 'suEmail', FILTER_SANITIZE_STRING) ?? NULL;
 $suPassword = filter_input(INPUT_POST, 'suPW', FILTER_SANITIZE_STRING) ?? NULL;
 
-//categorydropdown
+//categorydropdowns
 $category = filter_input(INPUT_GET, 'categoryDDL', FILTER_SANITIZE_STRING) ?? NULL;
+$createCat = filter_input(INPUT_POST, 'createCatDDL', FILTER_SANITIZE_STRING) ?? "";
 
-//catID
-//$catID = filter_input(INPUT_GET, 'catID', FILTER_VALIDATE_INT) ?? filter_input(INPUT_POST, 'catID', FILTER_VALIDATE_INT) ?? null;
+// bool for buttons
+$buttonUpdate = false;
 
 switch($action) {
 	
@@ -46,16 +53,20 @@ switch($action) {
 	case "Sign Up":
 	$sql = addUser($db, $suName, $suEmail, $suPassword);
 	include_once("loggedInHome.php");
-	var_dump($sql);
+	//var_dump($sql);
 	break;
 	
 	//loggedInHome.php
 	case "View Cards":
 	$flashcards = getFlashcards($db, $category);
-	var_dump($category);
+	//var_dump($category);
 	include("loggedInHome.php");
 	$category === $category;
-	var_dump($flashcards);
+	//var_dump($flashcards);
+	break;
+	
+	case "Add Cards":
+	include("createFlashcards.php");
 	break;
 	
 	case "Add Category":
@@ -80,19 +91,43 @@ switch($action) {
 	}
 	break;
 	
-	case "Answer":
-	include_once("index.php");
+	//on flashcard
+	case "EditCard":
+	$flashcards = getFlashcard($db, $c_id);
+	foreach($flashcards as $flashcard) {
+	}
+	$buttonUpdate = true;
+	//var_dump($c_id);
+	include_once("createFlashcards.php");
 	break;
 	
 	//createFlashcards.php
+	//adding flashcards
+	
 	case "Submit & Add More":
-	//function that adds flashcard to category
+	addFlashcard($db, $createCat, $question, $answer);
 	include_once("createFlashcards.php");
 	break;
 	
 	case "Submit & Complete":
-	//function that adds flashcard to category
+	addFlashcard($db, $createCat, $question, $answer);
+	$flashcards = getFlashcards($db, $createCat);
 	include("loggedInHome.php");
+	break;
+	
+	case "Update":
+	$sql = updateFlashcard($db, $card_id, $question, $answer);
+	//var_dump($sql);
+	include("loggedInHome.php");
+	//$message = "Flashcard updated.";
+	break;
+	
+	case "Cancel":
+	$flashcards = getFlashcards($db, $editCat_id);
+	//var_dump($category);
+	include("loggedInHome.php");
+	//$category === $category;
+	//var_dump($flashcards);
 	break;
 }
 

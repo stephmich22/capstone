@@ -13,12 +13,33 @@
 	text-align:center;
 }
 .row.head {
-	border-bottom:1px solid rgb(66, 134, 244);
+	//border-bottom:1px solid rgb(66, 134, 244);
 	padding-bottom:10px;
+}
+.row.middle {
+	background-image:url('images/fCardBackground.png');
+	background-color:rgba(66, 134, 244,.4);
+	//background-color:rgb(179, 202, 239);
+	
+}
+
+.col-md-6.col-sm-12.middle{
+	background-color:rgba(255,255,250,.5);
+	min-height:457px;
+}
+.col-md-12.col-sm-12.middle {
+	background-color:rgba(255,255,250,.5);
+	min-height:457px;
 }
 a {
 	color:rgb(66, 134, 244);
 	text-decoration:none;
+	display:inline;
+	white-space:nowrap;
+	
+}
+.links {
+	color:black;
 }
 a:hover {
 	text-decoration:none;
@@ -36,33 +57,42 @@ a:hover {
 	width:100%;
 	float:left;
 }
+
 /*pic*/
 #logo {
-	/*width:150px;
-	height:93px;*/
 	width: 100px;
 	height:100px;
-	
 }
+
+/*icons*/
 
 
 /* HEADINGS */
 h1 {
-	font-size:50px;
+	font-size:62px;
 	display:inline;
 	white-space:nowrap;
 	//border:1px solid black;
 	float:left;
-	//color:rgb(66, 134, 244);
-	color:black;
-	text-shadow: 1px 1px 3px gray;
+	color:rgb(66, 134, 244);
+	text-shadow:2px 2px 2px #000000;
+	//text-shadow: 1px 1px 3px gray;
 	-webkit-text-stroke-width: 1px;
 	-webkit-text-stroke-color: black;
+}
+.title {
+	font-size:42px;
+	text-shadow:1px 1px 1px #000000;
+	//text-shadow:1px 1px 1px rgb(66, 134, 244);
+}
+.title.signup {
+	color:rgb(66, 134, 244);
 }
 h2 {
 	text-align:center;
 	margin-top:10px;
-	color:rgb(19, 62, 132);
+	//color:rgb(19, 62, 132);
+	color:rgb(66, 134, 244);
 	padding:7px;
 }
 h3 {
@@ -78,7 +108,8 @@ h5 {
 	//border:1px solid green;
 	text-align:center;
 	margin-top:15px;
-	width:90%;
+	float:right;
+	width:100%;
 	//height:100%;
 	white-space:normal;
 }
@@ -94,27 +125,46 @@ h5 {
 #signupDiv {
 	margin:auto;
 	//border:1px solid black;
+	//background-color:rgba(19, 62, 132,.5);
 	width:150px;
 	padding-bottom:25px;
 }
-#flashcardHome {
+.flashcardHome {
 	width:90%;
 	border:1px solid rgb(19, 62, 132);
 	border-radius:10px;
 	//background-color:rgb(66, 134, 244);
-	background-color:rgb(66, 134, 244);
+	//background-color:rgb(66, 134, 244);
+	background-color:white;
 	margin:auto;
 	margin-top:45px;
 	margin-bottom:45px;
-	padding:10px;
 	max-width:400px;
 	white-space:normal;
 	box-shadow: 5px 10px 8px #888888;
 	
 }
-#flashcardHome:hover {
-	background-color:rgb(19, 62, 132);
-	color:rgb(66, 134, 244);
+.card {
+	min-height:150px;
+}
+
+.question {
+	display:block;
+	border-radius:10px;
+}
+.answer {
+	display:none;
+	background-color:rgb(66, 134, 244);
+	width:100%;
+	height:100%;
+	border-radius:10px;
+	
+}
+.flashcardHome:hover {
+	//background-color:rgb(19, 62, 132);
+	//background-color:rgb(66, 134, 244);
+	//color:rgb(66, 134, 244);
+	//color:white;
 }
 
 /*creating flashcards*/
@@ -123,7 +173,7 @@ h5 {
 	border:.5px solid rgb(19, 62, 132);
 	border-radius:10px;
 	//background-color:rgb(66, 134, 244);
-	background-color:rgb(66, 134, 244);
+	background-color:white;
 	margin:auto;
 	margin-top:45px;
 	margin-bottom:45px;
@@ -136,17 +186,65 @@ h5 {
 #addNewCardsDiv {
 	margin:auto;
 }
-.createSelect {
-	//float:left;
-}
 #selectAndAddNewDiv {
-	width:80%;
+	width:60%;
 	margin:auto;
-	border:1px solid black;
+	//border:1px solid black;
+	display:inline-block;
 }
+textarea {
+	resize:none;
+	width:100%;
+	border-radius:5px;
+	min-height:150px;
+}
+#qaHolder {
+	border:1px solid black;
+	width:90%;
+	margin:auto;
+	padding:5px;
+}
+#addNewCatCreateDiv {
+	width:60%;
+	margin:auto;
+}
+
+.form-control {
+
+}
+.form-control.home {
+	width:40%;
+	min-width:160px;
+	margin:auto;
+	max-width:200px;
+	box-shadow:inset 1px 1px 1px #888888;
+	border:.5px solid black;
+}
+.form-control.home.signup {
+	box-shadow:inset 2px 2px 2px #888888;
+	border:.5px solid black;
+}
+.form-control.text {
+	white-space:nowrap;
+	display:inline;
+	width:150px;
+	margin-bottom:2px;
+}
+.form-control.confirm {
+	margin-bottom:15px;
+}
+
+
 .btn {
 	background-color:rgb(66, 134, 244);
-	box-shadow: 2px 4px 3px #888888;
+	border:1px solid rgb(19, 62, 132);
+	box-shadow: 2px 2px 2px #888888;
+	margin:5px 2px 1px 0px;
+	width:160px;
+}
+.btn.login {
+	margin:0px 0px 6px 0px;
+	
 }
 .btn:hover {
 	background-color:rgb(19, 62, 132);
@@ -163,6 +261,7 @@ h5 {
 	float:right;
 	display:inline;
 	white-space:nowrap;
+	
 }
 /*.dropdown-item:hover {
 	background-color:rgb(19, 62, 132);
@@ -197,7 +296,9 @@ h5 {
 	margin:5px;
 	border:none;
 	border-radius:5px;
-	background-color:rgb(66, 134, 244);
+	//background-color:rgb(66, 134, 244);
+	background-color:rgb(19, 62, 132);
+	color:white;
 	padding:5px;
 	max-width:200px;
 	white-space:normal;
@@ -215,8 +316,8 @@ h5 {
 	
 }
 .button:hover {
-	background-color:rgb(19, 62, 132);
-	color:rgb(66, 134, 244);
+	color:rgb(19, 62, 132);
+	background-color:rgb(66, 134, 244);
 }
 
 /* FLASHCARDS */
@@ -237,10 +338,12 @@ h5 {
 
 /* LOGGEDINHOME PAGE */
 #catDdlDiv {
-	//border:1px solid black;
-	padding-right:5px;
-	width: 335px;
+//	border:1px solid green;
+	//background-color:rgba(52, 62, 132,.5);
+	padding:15px;
+	width: 100%;
 	margin:auto;
+	//min-height:350px;
 }
 select {
 	//margin-right:25px;
@@ -249,18 +352,20 @@ select {
 #addCatDiv {
 	//border:1px solid black;
 	text-align:center;
-	//margin:auto;
+	margin:auto;
 	width:80%;
 }
 #buttonsDiv {
-	//border:1px solid black;
+	//border:1px solid red;
 	width:80%;
-	//margin:auto;
+	margin:auto;
 	text-align:center;
+	white-space:normal;
 }
+/* maybe delete this */
 #justButtonsDiv {
 	width:80%;
-	//border:1px solid black;
+	border:1px solid orange;
 	margin:auto;
 	padding-top:5px;
 }
@@ -274,15 +379,4 @@ select {
 }
 	
 /* CREATINGS FLASHCARDS PAGE */
-textarea {
-	resize:none;
-	width:100%;
-	border-radius:5px;
-	min-height:150px;
-}
-#qaDiv {
-	//border:1px solid black;
-	width:90%;
-	margin:auto;
-	padding:5px;
-}
+

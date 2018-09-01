@@ -1,0 +1,5 @@
+NOTES
+
+
+** FOR LOGGED IN HOME PAGE
+^ if array count for getCat results is < 1, echo out "you do not yet have any flashcards, and give a larger button to create flashcards"

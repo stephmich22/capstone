@@ -83,29 +83,44 @@ function getFlashcards($db, $cat_id) {
 		die("There was a problem retrieving flashcards.");
 	}
 }
-//add new flashcard
-function addFlashcard($db, $catNameDDL, $question, $answer) {
+//get single flashcard (to edit or delete)
+function getFlashcard($db, $id) {
 	try {
-		$sql = $db->prepare("SELECT cat_id FROM categories WHERE cat_name='$catNameDDL'");
+		$sql = $db->prepare("SELECT * FROM flashcards WHERE fCard_id='$id'");
 		$sql->execute();
-		$results=$sql->fetch(PDO::FETCH_ASSOC);
+		$results = $sql->fetchAll(PDO::FETCH_ASSOC);
 		
-		foreach($results as $results) {
-			$id = $result['cat_id'];
-			var_dump($id);
-		}
-		
-		$sql2 = $db->prepare("INSERT INTO flashcards VALUES(null,$id,'$question','$answer')");
-		$sql2->execute();
-		return $sql2;
+		return $results;
 		
 	} catch(PDOException $e) {
-		die("There was a problem adding flashcard");
+		die("There was a problem retrieving flashcard");
 	}
+}
+//add new flashcard
+function addFlashcard($db, $catNameDDL, $question, $answer) {
+		try {
+			$sql = $db->prepare("INSERT INTO flashcards VALUES(NULL, '$catNameDDL','$question', '$answer')");
+			$sql->execute();
+			
+			//return $sql;
+			
+		} catch(PDOException $e) {
+			die("There was a problem adding flashcard.");
+		}
 }
 
 //update existing flashcard
-
+function updateFlashcard($db, $fCard_id, $question, $answer) {
+		try {
+			$sql = $db->prepare("UPDATE `flashcards` SET question = '$question' answer = '$answer' WHERE fCard_id='$fCard_id'");
+			$sql->execute();
+			
+			return $sql;
+			
+		} catch(PDOException $e) {
+			die("There was a problem updating flashcard.");
+		}
+}
 
 //delete flashcard
 
