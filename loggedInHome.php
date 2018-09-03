@@ -1,11 +1,11 @@
 <?php
-
-/*if($_SESSION['username'] == NULL || !isset($_SESSION['username']))
-{
+if($_SESSION["user_name"] == NULL || !isset($_SESSION["user_name"])){
 	header('location: homepage.php');
-}*/
+}
 require_once("db.php");
 require_once("functions.php");
+require_once("index.php");
+
 
 //TABLES & COLUMNS
 /* 
@@ -25,6 +25,7 @@ $cards = "";
 $addCat = "";
 //$title = "";
 $addNewCards = "";
+$showCatList = true;
 
 //creating category drop down list
 $categories .= "<div id='buttonsDiv'>";
@@ -43,10 +44,10 @@ $categories .= "</select>"; //closing categoryDDL
 
 $category = filter_input(INPUT_GET, 'categoryDDL', FILTER_SANITIZE_STRING) ?? NULL;
 
-//$categories .= "<div id='justButtonsDiv'>";
 $categories .= "<input type='submit' name='action' value='View Cards' class='btn'>";
 $categories .= "<input type='submit' name='action' value='Add Cards' class='btn'>";
-$categories .= "<input type='submit' name='action' value='Delete Category' class='btn'>";//</div>";
+$categories .= "<input type='submit' name='action' value='Delete Category' class='btn'>";
+$categories .= "<input type='submit' name='action' value='Edit Category Name' class='btn'>";
 $categories .= "</div></form>"; //closing buttonsDiv
 
 
@@ -74,14 +75,14 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 	}
 	
 	$title = "<h2 class='title'>" . $title_name . "</h2>";
-	$cards .= "<div id='cardDisplay'>";
+	$cards .= "<div id='cardsHolder'>";
 	
 	
 		foreach($flashcards as $flashcard) {
 			//question
-			$cards .= "<div class='flashcardHome'><a class='card question'>Question: <p>" . $flashcard['question'] . "</p></br></br>Tap card to view Answer</br><input type='hidden' name='c_id' value='" . $flashcard['cat_id'] . "'></a>";
+			$cards .= "<div class='cardDisplay'><div class='flashcardHome'><div class='question'>Question: <p>" . $flashcard['question'] . "</p></br></br><p class='tapCard'>Tap card or hover to view Answer</p></br><input type='hidden' name='c_id' value='" . $flashcard['cat_id'] . "'></div>";
 			//answer
-			$cards .= "<a class='card answer'>Answer: <p>" . $flashcard['answer'] . "</p></br></br>Tap for question<input type='hidden' name='c_id' value='" . $flashcard['cat_id'] . "'></a></div><a class='editCard' href='?id=" . $flashcard['fCard_id'] . "&action=EditCard'>Edit Card</a>";
+			$cards .= "<div class='answer'>Answer: <p>" . $flashcard['answer'] . "</p></br></br><input type='hidden' name='c_id' value='" . $flashcard['cat_id'] . "'></br><a class='editCard' href='?id=" . $flashcard['fCard_id'] . "&action=EditCard'>Edit Card</a></div></div></div>";
 		}
 	
 	$cards .= "</div>"; // tableDiv CLOSE
@@ -90,8 +91,11 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 	}// $category !== NULL CLOSE
 	else { //$category is NULL
 	//echo "hi";
+	
+	$showCatList = false;
+	
 	$addCat .= "<div id='addCatDiv'>";
-	$addCat .= "</br></br><form action='index.php' method='post'><input type='text' value='' placeholder='Add New Category' class='form-control home'><input type='submit' name='action' class='btn' value='Add Category'>";
+	$addCat .= "</br></br><form action='index.php' method='post'><input type='text' name='catNameText' placeholder='Add New Category' class='form-control home'><input type='submit' name='action' class='btn' value='Add Category'>";
 	$addCat .= "</form></div>";
 	
 	}
@@ -101,7 +105,7 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 else { // $category === default
 	//echo "bye";
 	$addCat .= "<div id='addCatDiv'>";
-	$addCat .= "</br><form action='index.php' method='post'><input type='text' value='' placeholder='Add New Category'><input type='submit' name='action' class='btn' value='Add Category'>";
+	$addCat .= "</br><form action='index.php' method='post'><input type='text' name='catNameText' placeholder='Add New Category'><input type='submit' name='action' class='btn' value='Add Category'>";
 	$addCat .= "</form></div>";
 	
 }
@@ -120,6 +124,7 @@ else { // $category === default
 	
 	<!-- css stylesheet -->
 	<link type="text/css" rel="stylesheet" href="style.css">
+	
 
     <title>FlashApp</title>
   </head>
@@ -135,35 +140,44 @@ else { // $category === default
 			Site Menu
 			</button>
 			<div class="dropdown-menu">
-				<a class="dropdown-item" href="loggedInHome.php">My Flashcards</a>
-				<a class="dropdown-item" href="createFlashcards.php">Create Flashcards</a>
+				<form action='index.php' method='get'>
+				<a class="dropdown-item" href="?action=Home">Home</a>
+				<a class="dropdown-item" href="?action=Create">Create Flashcards</a>
 				<div class="dropdown-divider"></div>
-				<a class="dropdown-item" href="homepage.php">Log Out</a>
+				<a class="dropdown-item" href="?action=LogOut">Log Out</a>
+			</form>
 			</div> <!-- dropdown-menu CLOSE -->
 			</div> <!-- btn-group div CLOSE -->
 			
 		</div> <!-- header div CLOSE -->
 		</div> <!-- col CLOSE -->
 	</div> <!-- header row CLOSE -->
-		<div class="row middle">
-		
-		<div class="col-md-12 col-sm-12 middle">
-		
+		<div class="row titleRow">
+		<div class="col-md-12 col-sm-12">
+		<div class="titleDiv">
 		<?php
 		if(isset($titleNames)){
 			echo $title;
 		} else {
-			echo "<h2 class='title'><u>M</u>y<u>Flashcards</u></h2>";
+			echo "<h2 class='title'>". $_SESSION['user_name'] . "'s flashcards</h2>";
 		}
 		?>
-		<!-- <h2><u>M</u>y <u>Flashcards</u></h2></br> -->
-		<div id="catDdlDiv">
+		</div> <!-- titleDiv CLOSE -->
+		</div> <!-- col CLOSE -->
+		</div> <!-- titleRow CLOSE -->
+		
+		<div class="row middle">
+		
+		<div class="col-md-12 col-sm-12 middle">
 		<?php
-			
+			if($showCatList == false) {
+			echo "<div id='catDdlDiv'>";
 			echo $categories;
 			echo $addCat;
+			echo "</div>";
+			}
+			
 		?>
-		</div> <!-- catDdlDiv CLOSE -->
 		<?php
 			//echo $addNewCards;
 			echo $cards;
@@ -197,8 +211,12 @@ else { // $category === default
 				switch(el.classList[1])
 				{
 					case "question":
+					//original
 					qa[0].style.display="none";
 					qa[1].style.display="block";
+					
+					
+					
 					
 					
 					break;

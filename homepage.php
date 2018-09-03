@@ -37,34 +37,49 @@
 		<div class="col-md-6 col-sm-12 login">
 			  <div id="loginDiv">
 			  <form action="index.php" method="post">
-			  <input type="text" value="" placeholder="Email" class="form-control home login text" name="email">
-			  <input type="text" value="" placeholder="Password" class="form-control home login text" name="password">
+			  <input type="text" placeholder="Email" class="form-control home login text" name="email">
+			  <input type="password" placeholder="Password" class="form-control home login text" name="password">
 			  <input type="submit" name="action" value="Login" class="btn login">
-			  </form> 
+			  </form>
+			  <?php if(isset($error)) {
+				  echo "<p>*" . $error . "</p>";
+			  }?> 
 			  </div>  <!--loginDiv CLOSE -->
+			  
 		</div>
 	</div> 
 		<div class="row middle">
 		<div class="col-md-6 col-sm-12 middle">
+		<div class="cardDisplay">
 			<div class="flashcardHome">
-			<a class="card question">
+			<div class="question">
 			<h3>What is FlashApp?</h3>
 			</br></br>
-			<p>Tap to learn more!</p></a>
-			<a class="card answer"></br></br>
+			<p>Tap of hover to learn more!</p>
+			</div> <!-- question div CLOSE -->
+			<div class="answer"></br></br>
 			<p>FlashApp is this bangin new app made by some weirdo</p>
-			</a>
-			</div>
+			</div> <!-- answer div CLOSE -->
+			</div> <!-- flashcardHome CLOSE -->
+			</div> <!-- cardDisplay CLOSE -->
+			
+			<div class="cardDisplay">
 			<div class="flashcardHome">
+			<div class="question">
 			<h3>Why use FlashApp?</h3>
-			<p>Tap to learn more!</p>
 			</br></br>
-				
-			</div>
+			<p>Tap to or hover to learn more!</p>
+			</div> <!-- question div CLOSE -->
+			<div class="answer">
+			<p> Here are the reasons why... </p>
+			</div> <!-- answer div CLOSE -->
+			</div> <!-- flashcardHome CLOSE -->
+			</div> <!-- cardDisplay CLOSE -->
 		</div>
 		<div class="col-md-6 col-sm-12 middle">
-			<h2 class="title signup">Sign Up <i class="fas fa-user-plus"></i></h2>
 			<div id="signupDiv">
+			<h2 class="title">Sign Up <i class="fas fa-user-plus"></i></h2>
+			
 			<form action="index.php" method="post">
 			<input type="text" name="suName" placeholder="Name"class="form-control home login text signup"></br>
 			</br> <input type="text" name="suEmail" placeholder="Email"class="form-control home login text signup"></br>

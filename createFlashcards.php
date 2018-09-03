@@ -1,8 +1,12 @@
 <?php
+if(!isset($_SESSION["user_name"]) || $_SESSION["user_name"] == NULL){
+	header('location: homepage.php');
+}
+
+include_once("index.php");
 	//include("loggedInHome.php");
 require_once("db.php");
 require_once("functions.php");
-
 global $buttonUpdate;
 
 	$addNewcat = "<div id='addNewCatCreateDiv'><input type='text' value='' class='form-control' placeholder='Add New Category'><input type='submit' name='action' class='btn' value='Add Category'></br></div>";
@@ -29,6 +33,7 @@ global $buttonUpdate;
 		$createButtons = "<input type='submit' name='action' value='Update' class='btn'><input type='submit' name='action' value='Delete' class='btn'><input type='submit' name='action' value='Cancel' class='btn'>";
 	}
 	else {
+		
 		$heading = "<h2>New Flashcard</h2>";
 		$createButtons = "<input type='submit' name='action' value='Submit & Add More' class='btn'><input type='submit' name='action' value='Submit & Complete' class='btn'>";
 	}
@@ -66,12 +71,14 @@ global $buttonUpdate;
 			Site Menu
 			</button>
 			<div class="dropdown-menu">
-				<a class="dropdown-item" href="loggedInHome.php">My Flashcards</a>
-				<a class="dropdown-item" href="createFlashcards.php">Create Flashcards</a>
+				<form action='index.php' method='get'>
+				<a class="dropdown-item" href="?action=Home">Home</a>
+				<a class="dropdown-item" href="?action=Create">Create Flashcards</a>
 				<div class="dropdown-divider"></div>
-				<a class="dropdown-item" href="homepage.php">Log Out</a>
+				<a class="dropdown-item" href="?action=LogOut">Log Out</a>
+			</form>
 			</div> <!-- dropdown-menu CLOSE -->
-			</div> <!--  btn-group div CLOSE -->
+			</div> <!-- btn-group div CLOSE -->
 		</div> <!-- headerDiv CLOSE -->
 		</div>
 		

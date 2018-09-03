@@ -1,5 +1,5 @@
 <?php
-//session_start();
+session_start();
 
 //TABLES & COLUMNS
 /*
@@ -34,11 +34,21 @@ $password = filter_input(INPUT_GET, 'password', FILTER_SANITIZE_STRING) ??
 //signup form stuff
 $suName = filter_input(INPUT_POST, 'suName', FILTER_SANITIZE_STRING) ?? NULL;
 $suEmail = filter_input(INPUT_POST, 'suEmail', FILTER_SANITIZE_STRING) ?? NULL;
+$suConEmail = filter_input(INPUT_POST, 'suConEmail', FILTER_SANITIZE_STRING) ?? NULL;
 $suPassword = filter_input(INPUT_POST, 'suPW', FILTER_SANITIZE_STRING) ?? NULL;
+$suConPassword = filter_input(INPUT_POST, 'suConPW', FILTER_SANITIZE_STRING) ?? NULL;
 
 //categorydropdowns
 $category = filter_input(INPUT_GET, 'categoryDDL', FILTER_SANITIZE_STRING) ?? NULL;
 $createCat = filter_input(INPUT_POST, 'createCatDDL', FILTER_SANITIZE_STRING) ?? "";
+//cattext
+$catNameText = filter_input(INPUT_POST, 'catNameText', FILTER_SANITIZE_STRING) ?? NULL;
+
+//sessions
+
+if(isset($_SESSION["customer_id"])) {
+	$sessionUser_id = $_SESSION["customer_id"];
+}
 
 // bool for buttons
 $buttonUpdate = false;
@@ -52,8 +62,14 @@ switch($action) {
 	//homepage.php
 	case "Sign Up":
 	$sql = addUser($db, $suName, $suEmail, $suPassword);
-	include_once("loggedInHome.php");
-	//var_dump($sql);
+	$results = login($db, $suEmail, $suPassword);
+		foreach($results as $result) {
+			$user_id = $result['user_id'];
+			$user_name = $result['name'];
+		}
+		$_SESSION["customer_id"] = $user_id;
+		$_SESSION["user_name"] = $user_name;
+	include("loggedInHome.php");
 	break;
 	
 	//loggedInHome.php
@@ -70,25 +86,36 @@ switch($action) {
 	break;
 	
 	case "Add Category":
-	addCategory($db, $catName, $sessionUser_id);
+	$hey = addCategory($db, $catNameText, $sessionUser_id);
 	include("loggedInHome.php");
 	break;
 	
 	case "Login":
 	$results = login($db, $email, $password);
 	if(count($results) == 1) {
-		$SESSION['username'] = $email;
 		foreach($results as $result) {
 			$user_id = $result['user_id'];
 			$user_name = $result['name'];
 		}
-		$SESSION['customer_id'] = $user_id;
-		$SESSION['user_name'] = $user_name;
-	include_once("loggedInHome.php");
+		$_SESSION["customer_id"] = $user_id;
+		$_SESSION["user_name"] = $user_name;
+	include("loggedInHome.php");
 	}
 	else {
-		echo "Sorry, invalid email or password";
+		$error = "Sorry, invalid login credentials.";
+		include("homepage.php");
+		
 	}
+	var_dump($_SESSION["user_name"]);
+	break;
+	
+	//dropdown list
+	case "Create":
+	include_once("createFlashcards.php");
+	break;
+	
+	case "Home":
+	include("loggedInHome.php");
 	break;
 	
 	//on flashcard
@@ -117,6 +144,7 @@ switch($action) {
 	
 	case "Update":
 	$sql = updateFlashcard($db, $card_id, $question, $answer);
+	$flashcards = getFlashcards($db, $editCat_id);
 	//var_dump($sql);
 	include("loggedInHome.php");
 	//$message = "Flashcard updated.";
@@ -128,6 +156,11 @@ switch($action) {
 	include("loggedInHome.php");
 	//$category === $category;
 	//var_dump($flashcards);
+	break;
+	
+	case "LogOut":
+	endSession();
+	include("homepage.php");
 	break;
 }
 

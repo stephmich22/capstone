@@ -12,31 +12,50 @@
 	white-space:nowrap;
 	text-align:center;
 }
+.row {
+	text-align:center;
+}
 .row.head {
 	//border-bottom:1px solid rgb(66, 134, 244);
 	padding-bottom:10px;
+	//background-color:rgb(21, 75, 163);
+	
+}
+.titleRow {
+	//background-color:rgb(66, 134, 244);
+	//background-image:url('images/school.jpg');
+	border-radius:2px;
+	border-bottom:1px solid rgb(66, 134, 244);
 }
 .row.middle {
 	background-image:url('images/fCardBackground.png');
-	background-color:rgba(66, 134, 244,.4);
+	//background-image:url('images/school.jpg');
+	//background-color:rgba(66, 134, 244,.4);
+	//background-color:rgb(66, 134, 244);
 	//background-color:rgb(179, 202, 239);
+	min-height:457px;
+	margin-top:15px;
 	
 }
-
+/*
 .col-md-6.col-sm-12.middle{
 	background-color:rgba(255,255,250,.5);
 	min-height:457px;
 }
+
 .col-md-12.col-sm-12.middle {
 	background-color:rgba(255,255,250,.5);
 	min-height:457px;
-}
+}*/
 a {
 	color:rgb(66, 134, 244);
 	text-decoration:none;
 	display:inline;
 	white-space:nowrap;
 	
+}
+.editCard {
+	color:white;
 }
 .links {
 	color:black;
@@ -57,6 +76,28 @@ a:hover {
 	width:100%;
 	float:left;
 }
+.titleDiv {
+    margin:auto;
+	position:relative;
+    left: -150px;
+    width: 50%;
+    height: 50%;
+    -webkit-animation: slide 0.5s forwards;
+    -webkit-animation-delay: 1.5s;
+    animation: slide .6s forwards;
+}
+.far.fa-eye {
+	display:inline;
+	white-space:nowrap;
+}
+@-webkit-keyframes slide {
+    100% { left: 0; }
+}
+
+@keyframes slide {
+    100% { left: 0; }
+}
+
 
 /*pic*/
 #logo {
@@ -76,17 +117,30 @@ h1 {
 	float:left;
 	color:rgb(66, 134, 244);
 	text-shadow:2px 2px 2px #000000;
-	//text-shadow: 1px 1px 3px gray;
 	-webkit-text-stroke-width: 1px;
 	-webkit-text-stroke-color: black;
+	padding-top:20px;
+	
+	/*
+	position:relative;
+    left: -250px;
+    width: 50%;
+    height: 50%;
+    -webkit-animation: slide 0.5s forwards;
+    -webkit-animation-delay: 1.5s;
+    animation: slide .6s forwards;*/
 }
 .title {
 	font-size:42px;
 	text-shadow:1px 1px 1px #000000;
 	//text-shadow:1px 1px 1px rgb(66, 134, 244);
+	//color:black;
+	//color:rgb(19, 62, 132);
+	//color:rgb(21, 75, 163);
+	color:rgb(66, 134, 244);
 }
 .title.signup {
-	color:rgb(66, 134, 244);
+	color:rgb(19, 62, 132);
 }
 h2 {
 	text-align:center;
@@ -105,9 +159,9 @@ h5 {
 }
 /*HOMEPAGE */
 #loginDiv {
-	//border:1px solid green;
 	text-align:center;
 	margin-top:15px;
+	padding-top:20px;
 	float:right;
 	width:100%;
 	//height:100%;
@@ -124,49 +178,72 @@ h5 {
 }
 #signupDiv {
 	margin:auto;
-	//border:1px solid black;
-	//background-color:rgba(19, 62, 132,.5);
+	margin-top:15px;
 	width:150px;
 	padding-bottom:25px;
 }
+
+/* Flashcard css*/
+
+.cardDisplay {
+	perspective: 700px;
+	max-width:400px;
+	margin-top:5px;
+	margin-bottom:45px;
+	margin:auto;
+}
 .flashcardHome {
-	width:90%;
+	width:100%;
 	border:1px solid rgb(19, 62, 132);
 	border-radius:10px;
-	//background-color:rgb(66, 134, 244);
-	//background-color:rgb(66, 134, 244);
 	background-color:white;
+	//background-image: linear-gradient(to bottom right, white,rgb(210, 222, 242));
 	margin:auto;
-	margin-top:45px;
-	margin-bottom:45px;
 	max-width:400px;
+	min-height:200px;
 	white-space:normal;
 	box-shadow: 5px 10px 8px #888888;
+	transition: .6s;
+	transform-style: preserve-3d;
+	margin-bottom:40px;
+	margin-top:10px;
 	
+	position:relative;
+	left: 150px;
+    -webkit-animation: slide 0.5s forwards;
+    -webkit-animation-delay: 1.5s;
+    animation: slide .6s forwards;
 }
-.card {
-	min-height:150px;
-}
-
-.question {
-	display:block;
-	border-radius:10px;
-}
-.answer {
-	display:none;
-	background-color:rgb(66, 134, 244);
+.cardDisplay:hover .flashcardHome, .cardDisplay.hover .flashcardHome {
+		transform: rotateY(180deg);
+	}
+.question, .answer {
+	backface-visibility: hidden;
 	width:100%;
 	height:100%;
-	border-radius:10px;
+	margin:auto;
+	top: 0;
+	left: 0;
+	padding:15px;
+}
+.question {
+	z-index: 2;
+	transform: rotateY(0deg);
+	height:100%;
+}
+.answer {
+	transform: rotateY(180deg);
+	position:absolute;
+	background-color:rgb(66, 134, 244);
+	background-image: linear-gradient(rgb(66, 134, 244), rgb(19, 62, 132));
+	border-radius:9px;
+	color:white;
 	
 }
-.flashcardHome:hover {
-	//background-color:rgb(19, 62, 132);
-	//background-color:rgb(66, 134, 244);
-	//color:rgb(66, 134, 244);
-	//color:white;
+.tapCard {
+	
+	//color:rgb(66,134,244);
 }
-
 /*creating flashcards*/
 #flashcardCreate {
 	width:90%;
@@ -174,6 +251,7 @@ h5 {
 	border-radius:10px;
 	//background-color:rgb(66, 134, 244);
 	background-color:white;
+	background-image: linear-gradient(to bottom right, white,rgb(210, 222, 242));
 	margin:auto;
 	margin-top:45px;
 	margin-bottom:45px;
@@ -197,6 +275,7 @@ textarea {
 	width:100%;
 	border-radius:5px;
 	min-height:150px;
+	box-shadow:inset 1px 1px 1px #888888;
 }
 #qaHolder {
 	border:1px solid black;
@@ -237,10 +316,12 @@ textarea {
 
 .btn {
 	background-color:rgb(66, 134, 244);
+	//background-color:rgb(21, 75, 163);
 	border:1px solid rgb(19, 62, 132);
 	box-shadow: 2px 2px 2px #888888;
 	margin:5px 2px 1px 0px;
 	width:160px;
+	border-radius:20px;
 }
 .btn.login {
 	margin:0px 0px 6px 0px;
@@ -377,6 +458,3 @@ select {
 	border:1px solid green;
 	width:100%;
 }
-	
-/* CREATINGS FLASHCARDS PAGE */
-

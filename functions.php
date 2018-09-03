@@ -37,6 +37,8 @@ function addCategory($db, $catName, $sessionUser_id) {
 	try {
 		$sql = $db->prepare("INSERT INTO categories VALUES(NULL, '$catName', $sessionUser_id, NOW())");
 		$sql->execute();
+		
+		return $sql;
 	} catch(PDOException $e) {
 		die("There was an error adding category");
 	}
@@ -138,6 +140,11 @@ function login($db, $email, $password) {
 	} catch(PDOException $e) {
 		die("There was a problem logging in.");
 	}
+}
+
+function endSession() {
+	session_destroy();
+    session_start();
 }
 
 
