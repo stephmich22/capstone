@@ -19,10 +19,10 @@
 // CATEGORY SQL STATEMENTS ------------------------------------------------
 //select categories
 //function getCats($db, $sessionUser_id) {
-function getCats($db) {
+function getCats($db, $sessionID) {
 	try {
 		//$sql = $db->prepare("SELECT * FROM categories WHERE user_id=$sessionUser_id ORDER BY date_created DESC");
-		$sql = $db->prepare("SELECT * FROM categories ORDER BY date_created DESC");
+		$sql = $db->prepare("SELECT * FROM categories WHERE user_id=$sessionID ORDER BY date_created DESC");
 		$sql->execute();
 		$results=$sql->fetchAll(PDO::FETCH_ASSOC);
 		
@@ -65,8 +65,56 @@ function getCatName($db, $category) {
 		die("There was a problem getting category name.");
 	}
 }
+function getCatId($db, $c_id){
+	try {
+		$sql = $db->prepare("SELECT cat_id FROM flashcards WHERE fCard_id=$c_id");
+		$sql->execute();
+		$results = $sql->fetchAll(PDO::FETCH_ASSOC);
+		return $results;
+		
+	} catch(PDOException $e) {
+		die("Nope.");
+	}
+}
 
 //delete category
+function deleteCategory($db, $deleteCat_name, $sessionID) {
+	try {
+	
+	$sql = $db->prepare("SELECT cat_id FROM categories WHERE cat_name='$deleteCat_name'");
+	$sql->execute();
+	$results = $sql->fetchAll(PDO::FETCH_ASSOC);
+	
+	foreach($results as $result) {
+		$cat_id = $result['cat_id'];
+	}
+	
+	
+	$sql2 = $db->prepare("DELETE FROM flashcards WHERE cat_id=$cat_id");
+	$sql2->execute();
+	
+	$sql3 = $db->prepare("DELETE FROM categories WHERE cat_id=$cat_id");
+	$sql3->execute();
+	
+	} catch(PDOException $e) {
+		die("There was a problem deleting category.");
+	}
+	
+	
+}
+function deleteCard($db, $id) {
+	try {
+		
+	$sql = $db->prepare("DELETE FROM flashcards WHERE fCard_id=$id");
+	$sql->execute();
+	
+	return $sql;
+	
+	} catch(PDOException $e) {
+		die("There was a problem deleting this card.");
+	}
+	
+}
 //^ 2 steps, you must first delete flashcards with common category ID and THEN delete the category
 
 

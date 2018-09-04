@@ -81,6 +81,12 @@
 			<h2 class="title">Sign Up <i class="fas fa-user-plus"></i></h2>
 			
 			<form action="index.php" method="post">
+			<?php
+				global $errorMessage;
+				if(isset($errorMessage)) {
+					echo $errorMessage;
+				}
+			?>
 			<input type="text" name="suName" placeholder="Name"class="form-control home login text signup"></br>
 			</br> <input type="text" name="suEmail" placeholder="Email"class="form-control home login text signup"></br>
 			</br> <input type="text" name="suConEmail" placeholder="Confirm Email" class="form-control home login text signup"></br>

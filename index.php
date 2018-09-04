@@ -53,6 +53,12 @@ if(isset($_SESSION["customer_id"])) {
 // bool for buttons
 $buttonUpdate = false;
 
+//errormessages
+$errorMessage = "";
+
+//catid's
+$deleteCat_name = filter_input(INPUT_POST, 'deleteCat_name', FILTER_SANITIZE_STRING) ?? "";
+
 switch($action) {
 	
 	default:
@@ -61,15 +67,24 @@ switch($action) {
 	
 	//homepage.php
 	case "Sign Up":
-	$sql = addUser($db, $suName, $suEmail, $suPassword);
-	$results = login($db, $suEmail, $suPassword);
+	if(empty($suName) || ctype_space($suName)) {
+		$errorMessage .= "Please enter a name </br>";
+	}
+	if(empty($suEmail) || ctype_space($suEmail)) {
+		$errorMessage .= "Please enter an email </br>";
+	}
+		else {
+			$sql = addUser($db, $suName, $suEmail, $suPassword);
+		$results = login($db, $suEmail, $suPassword);
 		foreach($results as $result) {
 			$user_id = $result['user_id'];
 			$user_name = $result['name'];
 		}
 		$_SESSION["customer_id"] = $user_id;
 		$_SESSION["user_name"] = $user_name;
-	include("loggedInHome.php");
+		include("loggedInHome.php");
+	}
+		include("homepage.php");
 	break;
 	
 	//loggedInHome.php
@@ -77,7 +92,6 @@ switch($action) {
 	$flashcards = getFlashcards($db, $category);
 	//var_dump($category);
 	include("loggedInHome.php");
-	$category === $category;
 	//var_dump($flashcards);
 	break;
 	
@@ -123,6 +137,7 @@ switch($action) {
 	$flashcards = getFlashcard($db, $c_id);
 	foreach($flashcards as $flashcard) {
 	}
+	$c_id === $c_id;
 	$buttonUpdate = true;
 	//var_dump($c_id);
 	include_once("createFlashcards.php");
@@ -143,9 +158,9 @@ switch($action) {
 	break;
 	
 	case "Update":
-	$sql = updateFlashcard($db, $card_id, $question, $answer);
+	$sql = updateFlashcard($db, $c_id, $question, $answer);
 	$flashcards = getFlashcards($db, $editCat_id);
-	//var_dump($sql);
+	var_dump($sql);
 	include("loggedInHome.php");
 	//$message = "Flashcard updated.";
 	break;
@@ -157,6 +172,36 @@ switch($action) {
 	//$category === $category;
 	//var_dump($flashcards);
 	break;
+	
+	//delete
+	case "Delete Category":
+	if(!$category == NULL || !$category == 'hi') {
+	include("deleteCat.php");
+	}
+	var_dump($category);
+	break;
+	
+	case "Yes":
+	deleteCategory($db, $deleteCat_name, $sessionUser_id);
+	include("loggedInHome.php");
+	var_dump($hi);
+	break;
+	
+	case "No":
+	include("loggedInHome.php");
+	break;
+	
+	//delete card = $c_id
+	case "Delete":
+	$hey = deleteCard($db, $c_id);
+	$results = getCatId($db, $c_id);
+	var_dump($results);
+	//$flashcards = getFlashcards($db, $editCat_id);
+	var_dump($hey);
+	include("loggedInHome.php");
+	break;
+	
+	
 	
 	case "LogOut":
 	endSession();

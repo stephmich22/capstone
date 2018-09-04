@@ -26,6 +26,7 @@ $addCat = "";
 //$title = "";
 $addNewCards = "";
 $showCatList = true;
+global $sessionUser_id;
 
 //creating category drop down list
 $categories .= "<div id='buttonsDiv'>";
@@ -33,7 +34,7 @@ $categories .= "<form action='index.php' method='get'>";
 $categories .= "<select name='categoryDDL' id='categoryDDL' class='form-control home'>";
 $categories .= "<option value='hi'>Select A Category</option>";
 
-$catOptions = getCats($db);
+$catOptions = getCats($db, $sessionUser_id);
 
 	foreach($catOptions as $catOption) {
 		$categories .= "<option value='" . $catOption['cat_id'] . "'>" . $catOption['cat_name'] . "</option>";
@@ -80,9 +81,9 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 	
 		foreach($flashcards as $flashcard) {
 			//question
-			$cards .= "<div class='cardDisplay'><div class='flashcardHome'><div class='question'>Question: <p>" . $flashcard['question'] . "</p></br></br><p class='tapCard'>Tap card or hover to view Answer</p></br><input type='hidden' name='c_id' value='" . $flashcard['cat_id'] . "'></div>";
+			$cards .= "<div class='cardDisplay'><div class='flashcardHome'><div class='question'>Question: <p>" . $flashcard['question'] . "</p></br></br><p class='tapCard'>Tap card or hover to view Answer</p></br></div>";
 			//answer
-			$cards .= "<div class='answer'>Answer: <p>" . $flashcard['answer'] . "</p></br></br><input type='hidden' name='c_id' value='" . $flashcard['cat_id'] . "'></br><a class='editCard' href='?id=" . $flashcard['fCard_id'] . "&action=EditCard'>Edit Card</a></div></div></div>";
+			$cards .= "<div class='answer'>Answer: <p>" . $flashcard['answer'] . "</p></br></br><input type='hidden' name='editCat_id' value='" . $flashcard['cat_id'] . "'></br><a class='editCard' href='?id=" . $flashcard['fCard_id'] . "&action=EditCard'>Edit Card</a></div></div></div>";
 		}
 	
 	$cards .= "</div>"; // tableDiv CLOSE

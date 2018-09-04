@@ -8,6 +8,8 @@ include_once("index.php");
 require_once("db.php");
 require_once("functions.php");
 global $buttonUpdate;
+global $sessionUser_id;
+global $editCat_id;
 
 	$addNewcat = "<div id='addNewCatCreateDiv'><input type='text' value='' class='form-control' placeholder='Add New Category'><input type='submit' name='action' class='btn' value='Add Category'></br></div>";
 
@@ -16,7 +18,7 @@ global $buttonUpdate;
 	$selectForCreate .= "<div id='selectCreateDiv'>";
 	$selectForCreate .= "<select name='createCatDDL' class='form-control'><option>Select Category</option>";
 	
-	$catOptions = getCats($db);
+	$catOptions = getCats($db,$sessionUser_id);
 
 	foreach($catOptions as $catOption) {
 		$selectForCreate .= "<option value='" . $catOption['cat_id'] . "'>" . $catOption['cat_name'] . "</option>";
@@ -29,6 +31,9 @@ global $buttonUpdate;
 	//var_dump($buttonUpdate);
 	
 	if($buttonUpdate == true) {
+		
+		var_dump($editCat_id);
+		var_dump($c_id);
 		$heading = "<h2>Edit Flashcard</h2>";
 		$createButtons = "<input type='submit' name='action' value='Update' class='btn'><input type='submit' name='action' value='Delete' class='btn'><input type='submit' name='action' value='Cancel' class='btn'>";
 	}
@@ -120,8 +125,6 @@ global $buttonUpdate;
 		<textarea placeholder="Answer" name="answer" value=""><?php if(isset($flashcard['answer'])) {
 			echo $flashcard['answer'];
 		}			?></textarea></br>
-		<input type="hidden" name="card_id" value="<?php echo $flashcard['fCard_id'] ?>">
-		<input type="hidden" name="editCat_id" value="<?php echo $flashcard['cat_id'] ?>">
 		
 		<?php echo $createButtons;  ?>
 		<!-- <input type="submit" name="action" value="Submit & Add More" class="button">
