@@ -55,6 +55,15 @@ $buttonUpdate = false;
 
 //errormessages
 $errorMessage = "";
+$error = false;
+$errorName = false;
+$errorEmail = false;
+$errorConEmail = false;
+$errorPassword = false;
+$errorConPassword = false;
+$errorMatchEmail = false;
+$errorMatchPassword = false;
+$errorEmailExists = false;
 
 //catid's
 $deleteCat_name = filter_input(INPUT_POST, 'deleteCat_name', FILTER_SANITIZE_STRING) ?? "";
@@ -65,15 +74,53 @@ switch($action) {
 	include("homepage.php");
 	break;
 	
+	case "flashApp":
+	if(isset($_SESSION["customer_id"])) {
+		include("loggedInHome.php");
+	}
+	else {
+		include("homepage.php");
+	}
+	break;
+	
 	//homepage.php
 	case "Sign Up":
 	if(empty($suName) || ctype_space($suName)) {
-		$errorMessage .= "Please enter a name </br>";
+		$errorName = true;
+		$error = true;
+		//$errorMessage .= "Please enter a name </br>";
 	}
 	if(empty($suEmail) || ctype_space($suEmail)) {
-		$errorMessage .= "Please enter an email </br>";
+		$errorEmail = true;
+		$error = true;
+		//$errorMessage .= "Please enter an email </br>";
 	}
-		else {
+	if(empty($suConEmail) || ctype_space($suConEmail)) {
+		$errorConEmail = true;
+		$error = true;
+		//$errorMessage .= "Please confirm you email address </br>";
+	}
+	if(empty($suPassword) || ctype_space($suPassword)) {
+		$errorPassword = true;
+		$error = true;
+		//$errorMessage .= "Please choose your password </br>";
+	}
+	if(empty($suConPassword) || ctype_space($suConPassword)) {
+		$errorConPassword = true;
+		$error = true;
+		//$errorMessage .= "Please confirm your password </br>";
+	}
+	if($suEmail !== $suConEmail) {
+		$errorMatchEmail = true;
+		$error = true;
+	}
+	if($suPassword !== $suConPassword) {
+		$errorMatchPassword= true; 
+		$error = true;
+	}
+		if($error == false){
+			$emailCheck = checkForEmail($db, $suEmail);
+			if($emailCheck == false){
 			$sql = addUser($db, $suName, $suEmail, $suPassword);
 		$results = login($db, $suEmail, $suPassword);
 		foreach($results as $result) {
@@ -82,9 +129,13 @@ switch($action) {
 		}
 		$_SESSION["customer_id"] = $user_id;
 		$_SESSION["user_name"] = $user_name;
-		include("loggedInHome.php");
+		include_once("loggedInHome.php");
+			}
+			else {
+				$errorEmailExists = true;
+				include("homepage.php");
+			}
 	}
-		include("homepage.php");
 	break;
 	
 	//loggedInHome.php
@@ -116,7 +167,7 @@ switch($action) {
 	include("loggedInHome.php");
 	}
 	else {
-		$error = "Sorry, invalid login credentials.";
+		$errorLogin = "Sorry, invalid login credentials.";
 		include("homepage.php");
 		
 	}
@@ -184,7 +235,6 @@ switch($action) {
 	case "Yes":
 	deleteCategory($db, $deleteCat_name, $sessionUser_id);
 	include("loggedInHome.php");
-	var_dump($hi);
 	break;
 	
 	case "No":

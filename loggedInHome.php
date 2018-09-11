@@ -27,14 +27,15 @@ $addCat = "";
 $addNewCards = "";
 $showCatList = true;
 global $sessionUser_id;
+$count = 1;
 
 //creating category drop down list
 $categories .= "<div id='buttonsDiv'>";
 $categories .= "<form action='index.php' method='get'>";
-$categories .= "<select name='categoryDDL' id='categoryDDL' class='form-control home'>";
+$categories .= "<h2>Select a Category</h2><select name='categoryDDL' id='categoryDDL' class='form-control home'>";
 $categories .= "<option value='hi'>Select A Category</option>";
 
-$catOptions = getCats($db, $sessionUser_id);
+$catOptions = getCats($db, $_SESSION["customer_id"]);
 
 	foreach($catOptions as $catOption) {
 		$categories .= "<option value='" . $catOption['cat_id'] . "'>" . $catOption['cat_name'] . "</option>";
@@ -81,9 +82,10 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 	
 		foreach($flashcards as $flashcard) {
 			//question
-			$cards .= "<div class='cardDisplay'><div class='flashcardHome'><div class='question'>Question: <p>" . $flashcard['question'] . "</p></br></br><p class='tapCard'>Tap card or hover to view Answer</p></br></div>";
+			$cards .= "<div class='cardDisplay'><div class='flashcardHome'><div class='question'><h2>Question " . $count ."</h2> <p>" . $flashcard['question'] .  "</p></br></br><p class='tapCard'>Tap card or hover to view Answer</p></br></div>";
 			//answer
-			$cards .= "<div class='answer'>Answer: <p>" . $flashcard['answer'] . "</p></br></br><input type='hidden' name='editCat_id' value='" . $flashcard['cat_id'] . "'></br><a class='editCard' href='?id=" . $flashcard['fCard_id'] . "&action=EditCard'>Edit Card</a></div></div></div>";
+			$cards .= "<div class='answer'><h2 class='answerText'>Answer:</h2> <p>" . $flashcard['answer'] . "</p></br></br><input type='hidden' name='editCat_id' value='" . $flashcard['cat_id'] . "'><input type='hidden' name='SaveForReview_id' value='" . $flashcard['fCard_id'] . "'></br><a class='editCard' href='?id=" . $flashcard['fCard_id'] . "&action=EditCard'>Edit Card</a></div></div></div>";
+			$count++;
 		}
 	
 	$cards .= "</div>"; // tableDiv CLOSE
@@ -96,7 +98,7 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 	$showCatList = false;
 	
 	$addCat .= "<div id='addCatDiv'>";
-	$addCat .= "</br></br><form action='index.php' method='post'><input type='text' name='catNameText' placeholder='Add New Category' class='form-control home'><input type='submit' name='action' class='btn' value='Add Category'>";
+	$addCat .= "<h2>Add a New Category</h2><form action='index.php' method='post'><input type='text' name='catNameText' placeholder='Add New Category' class='form-control home'><input type='submit' name='action' class='btn' value='Add Category'>";
 	$addCat .= "</form></div>";
 	
 	}
@@ -106,7 +108,7 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 else { // $category === default
 	//echo "bye";
 	$addCat .= "<div id='addCatDiv'>";
-	$addCat .= "</br><form action='index.php' method='post'><input type='text' name='catNameText' placeholder='Add New Category'><input type='submit' name='action' class='btn' value='Add Category'>";
+	$addCat .= "<h2>Add a New Category</h2><form action='index.php' method='post'><input type='text' name='catNameText' class='form-control home' placeholder='Add New Category'><input type='submit' name='action' class='btn' value='Add Category'>";
 	$addCat .= "</form></div>";
 	
 }
@@ -126,6 +128,8 @@ else { // $category === default
 	<!-- css stylesheet -->
 	<link type="text/css" rel="stylesheet" href="style.css">
 	
+	<!-- jquery -->
+	<script src="jquery-3.3.1.min.js"></script>
 
     <title>FlashApp</title>
   </head>
@@ -134,8 +138,9 @@ else { // $category === default
 	<div class="row bg-white head">
 		<div class="col-md-12 col-sm-12">
 		<div id="header">
-		<h1><a href="index.php"><u>FlashA</u>pp<img src="images/notes.png" id="logo"></a></h1>
-		
+		<form action='index.php' method='get'>
+		<h1><a href="?action=flashApp"><u>FlashA</u>pp<img src="images/notes.png" id="logo"></a></h1>
+		</form>
 		<div class="btn-group">
 			<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			Site Menu
@@ -186,7 +191,6 @@ else { // $category === default
 		?>
 		</div> <!--col CLOSE -->
 		</div> <!-- row CLOSE -->
-		
 		<div class="bg-white footer col-12">
 				<p>FlashApp | Copyright&copy;2018 </p>
 			</div> <!-- footer div CLOSE -->

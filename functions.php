@@ -214,8 +214,33 @@ function addUser($db, $name, $email, $password) {
 	return $sql;
 	
 }
+function checkForEmail($db, $email) {
+	try {
+		$sql = $db->prepare("SELECT * FROM users WHERE email='$email'");
+		$sql->execute();
+		$results = $sql->fetchAll(PDO::FETCH_ASSOC);
+		
+		if(count($results) > 0) {
+			$exists = true;
+		} else {
+			$exists = false;
+		}
+		return $exists;
+	} catch(PDOException $e) {
+		die("There was a problem checking email");
+	}
+}
 
 //edit account info
+
+//save for review
+function saveForReview($db, $sessionCard_id, $sessionUser_id) {
+	try {
+		
+	} catch(PDOException $e) {
+		die("There was a problem addin");
+	}
+}
 
 
 

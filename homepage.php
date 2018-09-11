@@ -41,15 +41,19 @@
 			  <input type="password" placeholder="Password" class="form-control home login text" name="password">
 			  <input type="submit" name="action" value="Login" class="btn login">
 			  </form>
-			  <?php if(isset($error)) {
-				  echo "<p>*" . $error . "</p>";
+			  <?php if(isset($errorLogin)) {
+				  echo "<p>*" . $errorLogin . "</p>";
 			  }?> 
 			  </div>  <!--loginDiv CLOSE -->
 			  
 		</div>
 	</div> 
-		<div class="row middle">
+	<!-- <div class="row strip">
+	</div> -->
+		<div class="row middle home">
 		<div class="col-md-6 col-sm-12 middle">
+		
+			<div class="cardHolderHome">
 		<div class="cardDisplay">
 			<div class="flashcardHome">
 			<div class="question">
@@ -71,10 +75,14 @@
 			<p>Tap to or hover to learn more!</p>
 			</div> <!-- question div CLOSE -->
 			<div class="answer">
-			<p> Here are the reasons why... </p>
+			<p> The average college student produces 640 pounds of solid waste each year, including roughly 500 disposable cups and 320 pounds of paper. 
+			</br>
+			Flashcards are an awesome way to prepare for any exam. However, they're only good for one time use. Even recycling has its flaws.
+			
 			</div> <!-- answer div CLOSE -->
 			</div> <!-- flashcardHome CLOSE -->
 			</div> <!-- cardDisplay CLOSE -->
+		</div>
 		</div>
 		<div class="col-md-6 col-sm-12 middle">
 			<div id="signupDiv">
@@ -82,21 +90,63 @@
 			
 			<form action="index.php" method="post">
 			<?php
-				global $errorMessage;
-				if(isset($errorMessage)) {
-					echo $errorMessage;
+				global $errorName;
+				global $errorEmail;
+				global $errorConEmail;
+				global $errorPassword;
+				global $errorConPassword;
+				global $errorMatchEmail;
+				global $errorMatchPassword;
+				global $errorEmailExists;
+			?>
+			<input type="text" name="suName" placeholder="Name"class="form-control home login text signup" value="<?php if(isset($_POST['suName']))echo $_POST['suName'];?>"></br>
+			<?php
+				if($errorName == true) {
+					echo "Please enter a name";
 				}
 			?>
-			<input type="text" name="suName" placeholder="Name"class="form-control home login text signup"></br>
-			</br> <input type="text" name="suEmail" placeholder="Email"class="form-control home login text signup"></br>
-			</br> <input type="text" name="suConEmail" placeholder="Confirm Email" class="form-control home login text signup"></br>
-			</br> <input type="password" name="suPW" placeholder="Password" class="form-control home text signup"></br>
-			</br><input type="password" name="suConPW" placeholder="Confirm Password" class="form-control home text signup confirm"></br>
-			<input type="submit" name="action" value="Sign Up" class=" btn signup"></br>
+			</br> <input type="text" name="suEmail" placeholder="Email"class="form-control home login text signup" value="<?php if(isset($_POST['suEmail']))echo $_POST['suEmail'];?>"></br>
+			<?php
+				if($errorEmail == true) {
+					echo "Please enter an email";
+				}
+			?>
+			</br> <input type="text" name="suConEmail" placeholder="Confirm Email" class="form-control home login text signup" value="<?php if(isset($_POST['suConEmail']))echo $_POST['suConEmail'];?>"></br>
+			<?php
+				$emailErr = "";
+				if($errorConEmail == true) {
+					$emailErr.= "Please confirm your email";
+				}
+				if($errorMatchEmail == true) {
+					$emailErr.= "Emails do not match";
+				}
+				if($errorEmailExists == true) {
+					$emailErr.= "This email already exists.";
+				}
+				echo $emailErr;
+			?>
+			</br> <input type="password" name="suPW" placeholder="Password" class="form-control home text signup" value="<?php if(isset($_POST['suPW']))echo $_POST['suPW'];?>"></br>
+			<?php
+				if($errorPassword == true) {
+					echo "Please choose your password";
+				}
+				if($errorMatchPassword == true) {
+					echo "Passwords do not match";
+				}
+			?>
+			</br><input type="password" name="suConPW" placeholder="Confirm Password" class="form-control home text signup confirm" value="<?php if(isset($_POST['suConPW']))echo $_POST['suConPW'];?>"></br>
+			<?php
+				if($errorConPassword == true) {
+					echo "Please confirm your password";
+				}
+			?>
+			</br><input type="submit" name="action" value="Sign Up" class=" btn signup"></br>
 			</form>
 			</div> <!-- signupDiv CLOSE -->
 		</div>
 		</div>
+		<!-- <div class="row strip">
+		</div> -->
 			<div class="footer col-12 bg-white">
 				<p>FlashApp | Copyright&copy;2018 </p>
 			</div> <!-- footer div CLOSE -->

@@ -59,6 +59,9 @@ global $editCat_id;
 	<!-- css stylesheet -->
 	<link type="text/css" rel="stylesheet" href="style.css">
 
+	<!-- jquery -->
+	<script src="jquery-3.3.1.min.js"></script>
+	
     <title>FlashApp</title>
   </head>
   <body>
@@ -66,8 +69,9 @@ global $editCat_id;
 	<div class="row bg-white head">
 		<div class="col-md-12 col-sm-12">
 		<div id="header">
-		<h1><a href="index.php"><u>FlashA</u>pp<img src="images/notes.png" id="logo"></a></h1>
-		
+		<form action='index.php' method='get'>
+		<h1><a href="?action=flashApp"><u>FlashA</u>pp<img src="images/notes.png" id="logo"></a></h1>
+		</form>
 		<!-- three-line drop down menu symbol
 		<a href="#menu">&#9776;</a> -->
 		
