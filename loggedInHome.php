@@ -6,11 +6,12 @@ require_once("db.php");
 require_once("functions.php");
 require_once("index.php");
 
-if(isset($_SESSION["category"])) {
+global $category_name;
+
+if(isset($_SESSION["category"]) || $category_name == true) {
 unset($_SESSION["category"]);
 }
 
-var_dump($_SESSION["category"]);
 //TABLES & COLUMNS
 /* 
 	categories
@@ -39,7 +40,21 @@ global $noCatSelected;
 global $noCatError;
 global $errorAddCat;
 
+$editCatName = "";
+
+//this is to edit existing category name
+if($category_name == true) {
+	$catTextNames = getCatName($db, $category);
+	foreach($catTextNames as $catTextName) {
+		$editText = $catTextName['cat_name'];
+	}
+	$editCatName .= "<div id='editCatNameDiv'><h2>Update Category</h2>";
+	$editCatName .= "<form action='index.php' method='post'><input type='text' name='catNameEditText' class='form-control home' value='" . $editText . "'><input type='hidden' name='editName_id' value='" . $category ."'><input type='submit' class='btn' name='action' value='Update Category'>";
+	$editCatName .= "</form></div>";
+}
+
 //creating category drop down list
+
 $categories .= "<div id='buttonsDiv'>";
 $categories .= "<form action='index.php' method='get'>";
 $categories .= "<h2>Select a Category</h2><select name='categoryDDL' id='categoryDDL' class='form-control home'>";
@@ -53,7 +68,7 @@ $catOptions = getCats($db, $_SESSION["customer_id"]);
 	
 
 $categories .= "</select>"; //closing categoryDDL
-if($noCatError = true) {
+if($noCatError == true) {
 	$categories .= "<p>Please select a category</p>";
 }
 
@@ -92,7 +107,7 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 	$title = "<h2 class='title'>" . $title_name . "</h2>";
 	$cards .= "<div id='cardsHolder'>";
 	
-	
+	if(isset($flashcards)) {
 		foreach($flashcards as $flashcard) {
 			//question
 			$cards .= "<form action='index.php' method='post'><div class='cardDisplay'><div class='flashcardHome'><div class='question'><h2>Question " . $count ."</h2> <p>" . $flashcard['question'] .  "</p></br></br><p class='tapCard'>Tap card or hover to view Answer</p></br></div>";
@@ -100,7 +115,7 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 			$cards .= "<div class='answer'><h2 class='answerText'>Answer:</h2> <p>" . $flashcard['answer'] . "</p></br></br><input type='hidden' name='editCat_id' value='" . $flashcard['cat_id'] . "'/><input type='hidden' name='SaveForReview_id' value='" . $flashcard['fCard_id'] . "'></br><a class='editCard' href='?id=" . $flashcard['fCard_id'] . "&action=EditCard'>Edit Card</a></div></div></div></form>";
 			$count++;
 			
-		}
+	}}
 	
 	$cards .= "</div>"; // tableDiv CLOSE
 	
@@ -113,7 +128,7 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 	
 	$addCat .= "<div id='addCatDiv'>";
 	$addCat .= "<h2>Add a New Category</h2><form action='index.php' method='post'><input type='text' name='catNameText' placeholder='Add New Category' class='form-control home'><input type='submit' name='action' class='btn' value='Add Category'>";
-	if($errorAddCat = true) {
+	if($errorAddCat == true) {
 		$errorMessage = "<p>Please enter a category name</p>";
 		$addCat .= $errorMessage;
 	}
@@ -126,7 +141,7 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 else { // $category === default
 	//echo "bye";
 	$addCat .= "<div id='addCatDiv'>";
-	$addCat .= "<h2>Add a New Category</h2><form action='index.php' method='post'><input type='text' name='catNameText' class='form-control home' placeholder='Add New Category' value='" . $name . "'><input type='submit' name='action' class='btn' value='Add Category'>";
+	$addCat .= "<h2>Add a New Category</h2><form action='index.php' method='post'><input type='text' name='catNameText' class='form-control home' placeholder='Add New Category' value=''><input type='submit' name='action' class='btn' value='" . $button . "'>";
 	$addCat .= "</form></div>";
 	
 }
@@ -176,7 +191,6 @@ $noCards .= "</form></div>";
 			<div class="dropdown-menu">
 				<form action='index.php' method='get'>
 				<a class="dropdown-item" href="?action=Home">Home</a>
-				<a class="dropdown-item" href="?action=Create">Create Flashcards</a>
 				<div class="dropdown-divider"></div>
 				<a class="dropdown-item" href="?action=LogOut">Log Out</a>
 			</form>
@@ -212,6 +226,9 @@ $noCards .= "</form></div>";
 			}
 			if($noFlashcards == true) {
 				echo $noCards;
+			}
+			if($category_name == true) {
+				echo $editCatName;
 			}
 			
 		?>

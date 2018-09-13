@@ -68,7 +68,6 @@ $sure .= "<input type='submit' class='btn' name='action' value='No'></form></div
 			<div class="dropdown-menu">
 				<form action='index.php' method='get'>
 				<a class="dropdown-item" href="?action=Home">Home</a>
-				<a class="dropdown-item" href="?action=Create">Create Flashcards</a>
 				<div class="dropdown-divider"></div>
 				<a class="dropdown-item" href="?action=LogOut">Log Out</a>
 			</form>

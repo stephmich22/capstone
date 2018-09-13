@@ -473,6 +473,17 @@ select {
 	border-radius:15px;
 	box-shadow: 5px 10px 20px #888888;
 }
+#editCatNameDiv {
+	text-align:center;
+	margin:auto;
+	width:80%;
+	margin-top:25px;
+	background-image: linear-gradient(to bottom left, rgba(210, 222, 242,.6), rgb(255,255,255),rgba(210, 222, 242,.6));
+	padding:15px;
+	border:15px solid rgba(255,255,255,.9);
+	border-radius:15px;
+	box-shadow: 5px 10px 20px #888888;
+}
 #buttonsDiv {
 	//border:1px solid red;
 	width:80%;

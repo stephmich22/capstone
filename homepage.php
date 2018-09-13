@@ -98,6 +98,7 @@
 				global $errorMatchEmail;
 				global $errorMatchPassword;
 				global $errorEmailExists;
+				global $invalidEmail;
 			?>
 			<input type="text" name="suName" placeholder="Name"class="form-control home login text signup" value="<?php if(isset($_POST['suName']))echo $_POST['suName'];?>"></br>
 			<?php
@@ -114,14 +115,23 @@
 			</br> <input type="text" name="suConEmail" placeholder="Confirm Email" class="form-control home login text signup" value="<?php if(isset($_POST['suConEmail']))echo $_POST['suConEmail'];?>"></br>
 			<?php
 				$emailErr = "";
+				if($invalidEmail == true) {
+					$emailErr.= "Please enter a valid email";
+				}
 				if($errorConEmail == true) {
+					if($invalidEmail == false) {
 					$emailErr.= "Please confirm your email";
+					}
 				}
 				if($errorMatchEmail == true) {
+					if($errorConEmail == false) {
+						if($invalidEmail == false) {
 					$emailErr.= "Emails do not match";
+						}
+					}
 				}
 				if($errorEmailExists == true) {
-					$emailErr.= "This email already exists.";
+					$emailErr.= "This email is already taken.";
 				}
 				echo $emailErr;
 			?>

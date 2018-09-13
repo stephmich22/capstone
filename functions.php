@@ -47,8 +47,9 @@ function addCategory($db, $catName, $sessionUser_id) {
 //update existing category name
 function updateCategoryName($db, $editCatName, $editCatName_id) {
 	try {
-		$sql = $db->prepare("UPDATE `categories` SET cat_name='$editCatName' WHERE cat_name='$editCatName_id'");
+		$sql = $db->prepare("UPDATE `categories` SET cat_name='$editCatName' WHERE cat_id='$editCatName_id'");
 		$sql->execute();
+		return $sql;
 	} catch(PDOException $e) {
 		die("There was a problem updating category.");
 	}

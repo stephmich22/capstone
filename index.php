@@ -56,6 +56,9 @@ if(isset($_SESSION["customer_id"])) {
 $buttonUpdate = false;
 $buttonEditCat = false;
 
+//add/edit cat button
+$button = "Add Category";
+
 //errormessages
 $errorMessage = "";
 $error = false;
@@ -68,12 +71,18 @@ $errorMatchEmail = false;
 $errorMatchPassword = false;
 $errorEmailExists = false;
 $errorAddCat = false;
+$blankQ = false;
+$blankA = false;
+$fieldError = false;
+$invalidEmail = false;
+$noMoreCards = false;
 
 //checking for cards
 $noFlashcards = false;
 //checking for cat
 $noCatSelected = false;
 $noCatError = false;
+$category_name = false;
 
 
 //delete stuff
@@ -83,7 +92,12 @@ $deleteCat_name =  filter_input(INPUT_GET, 'catToDelete', FILTER_SANITIZE_STRING
 //carrying over id to createpage
 $hiddenCatName =  filter_input(INPUT_GET, 'hiddenCatName', FILTER_SANITIZE_STRING) ??
     filter_input(INPUT_POST, 'hiddenCatName', FILTER_SANITIZE_STRING) ?? NULL;
-
+	
+//editing category
+$editCatText = filter_input(INPUT_GET, 'catNameEditText', FILTER_SANITIZE_STRING) ??
+    filter_input(INPUT_POST, 'catNameEditText', FILTER_SANITIZE_STRING) ?? NULL;
+$editName_id = filter_input(INPUT_GET, 'editName_id', FILTER_SANITIZE_STRING) ??
+    filter_input(INPUT_POST, 'editName_id', FILTER_SANITIZE_STRING) ?? NULL;
 
 switch($action) {
 	
@@ -135,6 +149,12 @@ switch($action) {
 		$errorMatchPassword= true; 
 		$error = true;
 	}
+	if(filter_var($suEmail, FILTER_VALIDATE_EMAIL)){ 
+		$invalidEmail = false;
+	}else{ 
+		$invalidEmail = true;
+		$error = true;
+	}
 		if($error == false){
 			$emailCheck = checkForEmail($db, $suEmail);
 			if($emailCheck == false){
@@ -152,6 +172,9 @@ switch($action) {
 				$errorEmailExists = true;
 				include("homepage.php");
 			}
+	}
+	else {
+		include("homepage.php");
 	}
 	break;
 	
@@ -189,10 +212,17 @@ switch($action) {
 		$noCatError = true;
 		include("loggedInHome.php");
 	} else {
+		$category_name = true;
 	include("loggedInHome.php");
 	}
+	var_dump($category);
 	break;
 	
+	case "Update Category":
+	$hi = updateCategoryName($db, $editCatText, $editName_id);
+	include("loggedInHome.php");
+	var_dump($hi);
+	break;
 	
 	//error check for blank field
 	case "Add Category":
@@ -248,14 +278,36 @@ switch($action) {
 	//adding flashcards
 	
 	case "Submit & Add More":
+	if(empty($question) || ctype_space($question)) {
+		$blankQ = true;
+		$fieldError= true;
+	}
+	if(empty($answer) || ctype_space($answer)) {
+		$blankA = true;
+		$fieldError= true;
+	}
+	if($fieldError == false) {
 	addFlashcard($db, $_SESSION["category"], $question, $answer);
+	}
 	include_once("createFlashcards.php");
 	break;
 	
 	case "Submit & Complete":
+	if(empty($question) || ctype_space($question)) {
+		$blankQ = true;
+		$fieldError= true;
+	}
+	if(empty($answer) || ctype_space($answer)) {
+		$blankA = true;
+		$fieldError= true;
+	}
+	if($fieldError == false) {
 	addFlashcard($db, $_SESSION["category"], $question, $answer);
-	//$flashcards = getFlashcards($db, $createCat);
-	include("loggedInHome.php");
+	include_once("loggedInHome.php");
+	}
+	else {
+		include("createFlashcards.php");
+	}
 	break;
 	
 	case "Update":
@@ -266,7 +318,9 @@ switch($action) {
 	break;
 	
 	case "Cancel":
+	if(isset($editCat_id)) {
 	$flashcards = getFlashcards($db, $editCat_id);
+	}
 	//var_dump($category);
 	include("loggedInHome.php");
 	//$category === $category;
@@ -278,6 +332,7 @@ switch($action) {
 	case "Delete Category":
 	if($category == 'hi') {
 		$noCatSelected = true;
+		$noCatError = true;
 		include("loggedInHome.php");
 	}
 	else {
@@ -301,6 +356,9 @@ switch($action) {
 	case "Delete":
 	deleteCard($db, $editFCard_id);
 	$flashcards = getFlashcards($db, $editCat_id);
+	if(count($flashcards) < 1) {
+		$noFlashcards = true;
+	}
 	include("loggedInHome.php");
 	break;
 	

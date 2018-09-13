@@ -13,8 +13,10 @@ global $editCat_id;
 global $c_id;
 global $category;
 global $categoryAdd_id;
+global $blankQ;
+global $blankA;
 
-if(!isset($_SESSION["category"])) {
+/*if(!isset($_SESSION["category"])) {
 	$addNewcat = "<div id='addNewCatCreateDiv'><input type='text' value='' class='form-control' placeholder='Add New Category'><input type='submit' name='action' class='btn' value='Add Category'></br></div>";
 
 	$selectForCreate = "";
@@ -30,7 +32,7 @@ if(!isset($_SESSION["category"])) {
 	
 	$selectForCreate .= "</select></div>Or.."; 
 	$selectForCreate .= "</div>"; //selectAndAddNewDiv CLOSE
-}
+}*/
 	//var_dump($buttonUpdate);
 	
 	if($buttonUpdate == true) {
@@ -52,7 +54,7 @@ if(!isset($_SESSION["category"])) {
 			$catName = $categoryName['cat_name'];
 		}
 		$heading = "<h2>" . $catName . "</h2>";
-		$createButtons = "<input type='submit' name='action' value='Submit & Add More' class='btn'><input type='submit' name='action' value='Submit & Complete' class='btn'>";
+		$createButtons = "<input type='submit' name='action' value='Submit & Add More' class='btn'><input type='submit' name='action' value='Submit & Complete' class='btn'><input type='submit' name='action' class='btn' value='Cancel'>";
 	}
 	
 	
@@ -94,7 +96,6 @@ if(!isset($_SESSION["category"])) {
 			<div class="dropdown-menu">
 				<form action='index.php' method='get'>
 				<a class="dropdown-item" href="?action=Home">Home</a>
-				<a class="dropdown-item" href="?action=Create">Create Flashcards</a>
 				<div class="dropdown-divider"></div>
 				<a class="dropdown-item" href="?action=LogOut">Log Out</a>
 			</form>
@@ -133,6 +134,9 @@ if(!isset($_SESSION["category"])) {
 		<textarea placeholder="Question" name="question" value=""><?php if(isset($flashcard['question'])){
 			echo $flashcard['question'];
 			} ?></textarea></br>
+			<?php if($blankQ == true) {
+			echo "<p>Please enter a question</p>";
+		}?>
 		<?php
 		if($buttonUpdate == true) {
 			echo "<h2>Answer</h2>";
@@ -142,6 +146,9 @@ if(!isset($_SESSION["category"])) {
 		<textarea placeholder="Answer" name="answer" value=""><?php if(isset($flashcard['answer'])) {
 			echo $flashcard['answer'];
 		}			?></textarea></br>
+		<?php if($blankA == true) {
+			echo "<p>Please enter an answer</p>";
+		}?>
 		
 		<?php echo $createButtons;  ?>
 		<!-- <input type="submit" name="action" value="Submit & Add More" class="button">
