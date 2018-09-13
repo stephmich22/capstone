@@ -76,25 +76,45 @@ function getCatId($db, $c_id){
 		die("Nope.");
 	}
 }
+function getCatIdFromName($db, $catName, $sessionUserId) {
+	try {
+		$sql = $db->prepare("SELECT * FROM categories WHERE cat_name='$catName' AND user_id='$sessionUserId'");
+		$sql->execute();
+		$results = $sql->fetchAll(PDO::FETCH_ASSOC);
+		
+		foreach($results as $result) {
+			$cat_id = $result['cat_id'];
+		}
+		return $cat_id;
+		
+	} catch(PDOException $e) {
+		die("There was a problem getting ID");
+	}
+}
 
 //delete category
-function deleteCategory($db, $deleteCat_name, $sessionID) {
+function deleteCategory($db, $sessionCat, $sessionID) {
 	try {
 	
-	$sql = $db->prepare("SELECT cat_id FROM categories WHERE cat_name='$deleteCat_name'");
+	
+	$sql = $db->prepare("SELECT * FROM flashcards WHERE cat_id='$sessionCat'");
 	$sql->execute();
 	$results = $sql->fetchAll(PDO::FETCH_ASSOC);
 	
+	
+	$cardsToDelete = array();
+	
 	foreach($results as $result) {
-		$cat_id = $result['cat_id'];
+		array_push($cardsToDelete, $result['fCard_id']);
 	}
 	
+	foreach($cardsToDelete as $card_id) {
+		$sql3 = $db->prepare("DELETE FROM `flashcards` WHERE fCard_id='$card_id'");
+		$sql3->execute();
+	}
 	
-	$sql2 = $db->prepare("DELETE FROM flashcards WHERE cat_id=$cat_id");
-	$sql2->execute();
-	
-	$sql3 = $db->prepare("DELETE FROM categories WHERE cat_id=$cat_id");
-	$sql3->execute();
+	$sql4 = $db->prepare("DELETE FROM `categories` WHERE cat_id='$sessionCat'");
+	$sql4->execute();
 	
 	} catch(PDOException $e) {
 		die("There was a problem deleting category.");
@@ -105,7 +125,7 @@ function deleteCategory($db, $deleteCat_name, $sessionID) {
 function deleteCard($db, $id) {
 	try {
 		
-	$sql = $db->prepare("DELETE FROM flashcards WHERE fCard_id=$id");
+	$sql = $db->prepare("DELETE FROM flashcards WHERE fCard_id='$id'");
 	$sql->execute();
 	
 	return $sql;
@@ -162,7 +182,7 @@ function addFlashcard($db, $catNameDDL, $question, $answer) {
 //update existing flashcard
 function updateFlashcard($db, $fCard_id, $question, $answer) {
 		try {
-			$sql = $db->prepare("UPDATE `flashcards` SET question = '$question' answer = '$answer' WHERE fCard_id='$fCard_id'");
+			$sql = $db->prepare("UPDATE `flashcards` SET question = '$question', answer = '$answer' WHERE fCard_id='$fCard_id'");
 			$sql->execute();
 			
 			return $sql;

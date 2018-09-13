@@ -6,7 +6,11 @@ require_once("db.php");
 require_once("functions.php");
 require_once("index.php");
 
+if(isset($_SESSION["category"])) {
+unset($_SESSION["category"]);
+}
 
+var_dump($_SESSION["category"]);
 //TABLES & COLUMNS
 /* 
 	categories
@@ -28,6 +32,12 @@ $addNewCards = "";
 $showCatList = true;
 global $sessionUser_id;
 $count = 1;
+$name = "";
+global $buttonEditCat;
+global $noFlashcards;
+global $noCatSelected;
+global $noCatError;
+global $errorAddCat;
 
 //creating category drop down list
 $categories .= "<div id='buttonsDiv'>";
@@ -43,6 +53,9 @@ $catOptions = getCats($db, $_SESSION["customer_id"]);
 	
 
 $categories .= "</select>"; //closing categoryDDL
+if($noCatError = true) {
+	$categories .= "<p>Please select a category</p>";
+}
 
 $category = filter_input(INPUT_GET, 'categoryDDL', FILTER_SANITIZE_STRING) ?? NULL;
 
@@ -82,10 +95,11 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 	
 		foreach($flashcards as $flashcard) {
 			//question
-			$cards .= "<div class='cardDisplay'><div class='flashcardHome'><div class='question'><h2>Question " . $count ."</h2> <p>" . $flashcard['question'] .  "</p></br></br><p class='tapCard'>Tap card or hover to view Answer</p></br></div>";
+			$cards .= "<form action='index.php' method='post'><div class='cardDisplay'><div class='flashcardHome'><div class='question'><h2>Question " . $count ."</h2> <p>" . $flashcard['question'] .  "</p></br></br><p class='tapCard'>Tap card or hover to view Answer</p></br></div>";
 			//answer
-			$cards .= "<div class='answer'><h2 class='answerText'>Answer:</h2> <p>" . $flashcard['answer'] . "</p></br></br><input type='hidden' name='editCat_id' value='" . $flashcard['cat_id'] . "'><input type='hidden' name='SaveForReview_id' value='" . $flashcard['fCard_id'] . "'></br><a class='editCard' href='?id=" . $flashcard['fCard_id'] . "&action=EditCard'>Edit Card</a></div></div></div>";
+			$cards .= "<div class='answer'><h2 class='answerText'>Answer:</h2> <p>" . $flashcard['answer'] . "</p></br></br><input type='hidden' name='editCat_id' value='" . $flashcard['cat_id'] . "'/><input type='hidden' name='SaveForReview_id' value='" . $flashcard['fCard_id'] . "'></br><a class='editCard' href='?id=" . $flashcard['fCard_id'] . "&action=EditCard'>Edit Card</a></div></div></div></form>";
 			$count++;
+			
 		}
 	
 	$cards .= "</div>"; // tableDiv CLOSE
@@ -99,6 +113,10 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 	
 	$addCat .= "<div id='addCatDiv'>";
 	$addCat .= "<h2>Add a New Category</h2><form action='index.php' method='post'><input type='text' name='catNameText' placeholder='Add New Category' class='form-control home'><input type='submit' name='action' class='btn' value='Add Category'>";
+	if($errorAddCat = true) {
+		$errorMessage = "<p>Please enter a category name</p>";
+		$addCat .= $errorMessage;
+	}
 	$addCat .= "</form></div>";
 	
 	}
@@ -108,9 +126,19 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 else { // $category === default
 	//echo "bye";
 	$addCat .= "<div id='addCatDiv'>";
-	$addCat .= "<h2>Add a New Category</h2><form action='index.php' method='post'><input type='text' name='catNameText' class='form-control home' placeholder='Add New Category'><input type='submit' name='action' class='btn' value='Add Category'>";
+	$addCat .= "<h2>Add a New Category</h2><form action='index.php' method='post'><input type='text' name='catNameText' class='form-control home' placeholder='Add New Category' value='" . $name . "'><input type='submit' name='action' class='btn' value='Add Category'>";
 	$addCat .= "</form></div>";
 	
+}
+
+//no flashcards display
+if($noFlashcards == true) {
+$noCards = "";
+$noCards .= "<div id='noCardsDiv'>";
+$noCards .= "<form action='index.php' method='post'>";
+$noCards .= "<h2>There are no cards in this category</h2>";
+$noCards .= "<input type='hidden' name='hiddenCatName' value='" . $title_name . "'><input type='submit' name='action' class='btn extend' value='Add Cards to Category'>";
+$noCards .= "</form></div>";
 }
 
 ?>
@@ -176,19 +204,24 @@ else { // $category === default
 		
 		<div class="col-md-12 col-sm-12 middle">
 		<?php
-			if($showCatList == false) {
+			if($showCatList == false || $noCatSelected == true) {
 			echo "<div id='catDdlDiv'>";
 			echo $categories;
 			echo $addCat;
 			echo "</div>";
 			}
+			if($noFlashcards == true) {
+				echo $noCards;
+			}
 			
 		?>
+	<!-- 	<form action='index.php' method='post'> -->
 		<?php
 			//echo $addNewCards;
 			echo $cards;
 			
 		?>
+		<!-- </form> -->
 		</div> <!--col CLOSE -->
 		</div> <!-- row CLOSE -->
 		<div class="bg-white footer col-12">

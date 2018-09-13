@@ -68,7 +68,7 @@ a {
 }
 a:hover {
 	text-decoration:none;
-	color:rgb(19, 62, 132);
+	color:rgb(145, 182, 242);
 }
 /*COLUMNS*/
 .content {
@@ -347,6 +347,15 @@ textarea {
 	color:white;
 	border:1px solid white;
 }
+.btn.extend {
+	background-color:rgb(66, 134, 244);
+	box-shadow: 2px 2px 2px #888888;
+	margin:5px 2px 1px 0px;
+	display:inline-block;
+	border-radius:20px;
+	color:white;
+	border:1px solid white;
+}
 .btn.login {
 	margin:0px 0px 6px 0px;
 	color:white;
@@ -492,8 +501,27 @@ select {
 	border:1px solid green;
 	width:100%;
 }
-/* deletecat */
-.sureDiv {
+/*nocardsdiv*/
+#noCardsDiv {
+	text-align:center;
 	margin:auto;
-	border:1px solid black;
+	width:80%;
+	margin-top:25px;
+	background-image: linear-gradient(to bottom left, rgba(210, 222, 242,.6), rgb(255,255,255),rgba(210, 222, 242,.6));
+	padding:15px;
+	border:15px solid rgba(255,255,255,.9);
+	border-radius:15px;
+	box-shadow: 5px 10px 20px #888888;
+}
+/* deletecat */
+#sureDiv {
+	text-align:center;
+	margin:auto;
+	width:80%;
+	margin-top:25px;
+	background-image: linear-gradient(to bottom left, rgba(210, 222, 242,.6), rgb(255,255,255),rgba(210, 222, 242,.6));
+	padding:15px;
+	border:15px solid rgba(255,255,255,.9);
+	border-radius:15px;
+	box-shadow: 5px 10px 20px #888888;
 }

@@ -2,22 +2,38 @@
 if(!isset($_SESSION["user_name"]) || $_SESSION["user_name"] == NULL){
 	header('location: homepage.php');
 }
+if(!isset($_SESSION["category"])) {
+	header('location: homepage.php');
+}
 
 $title = "<h2 class='title'>Delete Category</h2>";
 global $category;
-var_dump($category);
+var_dump($_SESSION["category"]);
 
 $categoryNames = getCatName($db, $category);
 foreach($categoryNames as $categoryName) {
 	$catName = $categoryName['cat_name'];
 }
 
+/*$deleteCat_ids = getCatId($db, $category);
+foreach($deleteCat_ids as $deleteCat_id) {
+	$catToDelete = $deleteCat_id["cat_id"];
+}
+var_dump($catToDelete . "hi");
+$flashcardsToDelete = array();
 
+$flashcards_ids = getFlashcards($db, $_SESSION["category"]);
+foreach($flashcards_ids as $flashcard_id) {
+	
+	array_push($flashcardsToDelete, $flashcard_id["fCard_id"]);
+}
+var_dump($flashcardsToDelete);*/
 $sure = "";
 
-$sure .= "<div class='sureDiv'><h3>Are you sure you would like to delete the entire '" . $catName . "' category?</h3>";
-$sure .= "<form action='index.php' method='post'><input type='hidden' name='deleteCat_name' value='" . $catName . "'><input type='submit' class='btn' name='action' value='Yes'>";
+$sure .= "<div id='sureDiv'><h3>Are you sure you would like to delete the entire '" . $catName . "' category?</h3>";
+$sure .= "<form action='index.php' method='post'><input type='hidden' name='catToDelete' value='" . $catName . "'><input type='submit' class='btn' name='action' value='Yes'>";
 $sure .= "<input type='submit' class='btn' name='action' value='No'></form></div>";
+
 
 ?>
 

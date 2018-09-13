@@ -10,7 +10,11 @@ require_once("functions.php");
 global $buttonUpdate;
 global $sessionUser_id;
 global $editCat_id;
+global $c_id;
+global $category;
+global $categoryAdd_id;
 
+if(!isset($_SESSION["category"])) {
 	$addNewcat = "<div id='addNewCatCreateDiv'><input type='text' value='' class='form-control' placeholder='Add New Category'><input type='submit' name='action' class='btn' value='Add Category'></br></div>";
 
 	$selectForCreate = "";
@@ -24,22 +28,30 @@ global $editCat_id;
 		$selectForCreate .= "<option value='" . $catOption['cat_id'] . "'>" . $catOption['cat_name'] . "</option>";
 	}
 	
-	$selectForCreate .= "</select></div>Or.."; //selectCreateDiv CLOSE
-	/*$selectForCreate .= "<div id='addNewCatCreateDiv'><h5>Add New Category</h5><input type='text' value=''><input type='submit' name='action' class='button' value='Add Category'></div>"; //addNewCatCreateDiv CLOSE*/
+	$selectForCreate .= "</select></div>Or.."; 
 	$selectForCreate .= "</div>"; //selectAndAddNewDiv CLOSE
-	
+}
 	//var_dump($buttonUpdate);
 	
 	if($buttonUpdate == true) {
 		
-		var_dump($editCat_id);
-		var_dump($c_id);
+		//getting cat_id for hidden tag
+		$fCardResults = getFlashcard($db, $c_id);
+		
+		foreach($fCardResults as $fCardResult) {
+			$catUpdateId = $fCardResult['cat_id'];
+			$fCardUpdateId = $fCardResult['fCard_id'];
+		}
 		$heading = "<h2>Edit Flashcard</h2>";
-		$createButtons = "<input type='submit' name='action' value='Update' class='btn'><input type='submit' name='action' value='Delete' class='btn'><input type='submit' name='action' value='Cancel' class='btn'>";
+		$createButtons = "<input type='submit' name='action' value='Update' class='btn'><input type='submit' name='action' value='Delete' class='btn'><input type='submit' name='action' value='Cancel' class='btn'><input type='hidden' name='editCat_id' value='" . $catUpdateId . "'/><input type='hidden' name='editFCard_id' value='" . $fCardUpdateId . "'/>";
 	}
 	else {
 		
-		$heading = "<h2>New Flashcard</h2>";
+		$categoryNames = getCatName($db, $_SESSION["category"]);
+		foreach($categoryNames as $categoryName) {
+			$catName = $categoryName['cat_name'];
+		}
+		$heading = "<h2>" . $catName . "</h2>";
 		$createButtons = "<input type='submit' name='action' value='Submit & Add More' class='btn'><input type='submit' name='action' value='Submit & Complete' class='btn'>";
 	}
 	
@@ -103,10 +115,11 @@ global $editCat_id;
 		<?php
 		if(!isset($flashcard)) {
 			echo $heading;
+			if(!isset($_SESSION["category"])) {
 			echo $selectForCreate;
 			echo "</br>";
 			echo $addNewcat;
-			
+			}
 		}
 		
 		?>
