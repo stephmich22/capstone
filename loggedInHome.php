@@ -62,6 +62,9 @@ $categories .= "<option value='hi'>Select A Category</option>";
 
 $catOptions = getCats($db, $_SESSION["customer_id"]);
 
+
+
+
 	foreach($catOptions as $catOption) {
 		$categories .= "<option value='" . $catOption['cat_id'] . "'>" . $catOption['cat_name'] . "</option>";
 	}
@@ -112,7 +115,7 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 			//question
 			$cards .= "<form action='index.php' method='post'><div class='cardDisplay'><div class='flashcardHome'><div class='question'><h2>Question " . $count ."</h2> <p>" . $flashcard['question'] .  "</p></br></br><p class='tapCard'>Tap card or hover to view Answer</p></br></div>";
 			//answer
-			$cards .= "<div class='answer'><h2 class='answerText'>Answer:</h2> <p>" . $flashcard['answer'] . "</p></br></br><input type='hidden' name='editCat_id' value='" . $flashcard['cat_id'] . "'/><input type='hidden' name='SaveForReview_id' value='" . $flashcard['fCard_id'] . "'></br><a class='editCard' href='?id=" . $flashcard['fCard_id'] . "&action=EditCard'>Edit Card</a></div></div></div></form>";
+			$cards .= "<div class='answer'><h2 class='answerText'>Answer:</h2> <p>" . $flashcard['answer'] . "</p></br></br><input type='hidden' name='editCat_id' value='" . $flashcard['cat_id'] . "'/><input type='hidden' name='SaveForReview_id' value='" . $flashcard['fCard_id'] . "'><a class='editCard' href='?id=" . $flashcard['fCard_id'] . "&action=EditCard'>Edit Card</a></div></div></div></form>";
 			$count++;
 			
 	}}
@@ -127,7 +130,13 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 	$showCatList = false;
 	
 	$addCat .= "<div id='addCatDiv'>";
-	$addCat .= "<h2>Add a New Category</h2><form action='index.php' method='post'><input type='text' name='catNameText' placeholder='Add New Category' class='form-control home'><input type='submit' name='action' class='btn' value='Add Category'>";
+	if(count($catOptions) > 0) {
+	$addCat .= "<h2>Add a Category</h2>";
+	}
+	else {
+		$addCat .= "<h2>Begin by adding a category</h2>";
+	}
+	$addCat .= "<form action='index.php' method='post'><input type='text' name='catNameText' placeholder='Add New Category' class='form-control home'><input type='submit' name='action' class='btn' value='Add Category'>";
 	if($errorAddCat == true) {
 		$errorMessage = "<p>Please enter a category name</p>";
 		$addCat .= $errorMessage;
@@ -141,7 +150,8 @@ if($category !== 'hi' || isset($editCat_id)) { //if a category other than defaul
 else { // $category === default
 	//echo "bye";
 	$addCat .= "<div id='addCatDiv'>";
-	$addCat .= "<h2>Add a New Category</h2><form action='index.php' method='post'><input type='text' name='catNameText' class='form-control home' placeholder='Add New Category' value=''><input type='submit' name='action' class='btn' value='" . $button . "'>";
+	$addCat .= "<h2>Add a Category</h2>";
+	$addCat .= "<form action='index.php' method='post'><input type='text' name='catNameText' class='form-control home' placeholder='Add New Category' value=''><input type='submit' name='action' class='btn' value='" . $button . "'>";
 	$addCat .= "</form></div>";
 	
 }
@@ -220,7 +230,8 @@ $noCards .= "</form></div>";
 		<?php
 			if($showCatList == false || $noCatSelected == true) {
 			echo "<div id='catDdlDiv'>";
-			echo $categories;
+			if(count($catOptions) > 0)  {
+			echo $categories;}
 			echo $addCat;
 			echo "</div>";
 			}

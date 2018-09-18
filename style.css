@@ -211,10 +211,11 @@ h5 {
 	margin-bottom:45px;
 	margin:auto;
 	height:auto;
+	white-space:normal;
 }
 .flashcardHome {
 	width:100%;
-	height:auto;
+	height:300px;
 	border:15px solid white;
 	border-radius:10px;
 	background-image: linear-gradient( rgb(255,255,255),rgba(210, 222, 242,.9),rgba(210, 222, 242,.6));
@@ -234,10 +235,14 @@ h5 {
     -webkit-animation-delay: 1.5s;
     animation: slide .6s forwards;
 }
+.flashcardHome.homepage {
+	height:auto;
+}
 .cardHolderHome {
 	margin:25px auto auto auto;
 	//border:1px solid green;
 	height:auto;
+	white-space:normal;
 }
 .cardDisplay:hover .flashcardHome, .cardDisplay.hover .flashcardHome {
 		transform: rotateY(180deg);
@@ -250,6 +255,7 @@ h5 {
 	top: 0;
 	left: 0;
 	padding:15px;
+	white-space:normal;
 }
 .question {
 	z-index: 2;
@@ -526,6 +532,7 @@ select {
 }
 /* deletecat */
 #sureDiv {
+	white-space:normal;
 	text-align:center;
 	margin:auto;
 	width:80%;

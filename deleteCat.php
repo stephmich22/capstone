@@ -8,7 +8,7 @@ if(!isset($_SESSION["category"])) {
 
 $title = "<h2 class='title'>Delete Category</h2>";
 global $category;
-var_dump($_SESSION["category"]);
+//var_dump($_SESSION["category"]);
 
 $categoryNames = getCatName($db, $category);
 foreach($categoryNames as $categoryName) {

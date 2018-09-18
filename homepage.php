@@ -55,29 +55,28 @@
 		
 			<div class="cardHolderHome">
 		<div class="cardDisplay">
-			<div class="flashcardHome">
+			<div class="flashcardHome homepage">
 			<div class="question">
 			<h3>What is FlashApp?</h3>
 			</br></br>
-			<p>Tap of hover to learn more!</p>
+			<p>Tap or hover to learn more!</p>
 			</div> <!-- question div CLOSE -->
-			<div class="answer"></br></br>
-			<p>FlashApp is this bangin new app made by some weirdo</p>
+			<div class="answer"></br>
+			<p>FlashApp is a virtual alternative to index cards. FlashApp is designed to help you study, whenever, wherever.</p>
 			</div> <!-- answer div CLOSE -->
 			</div> <!-- flashcardHome CLOSE -->
 			</div> <!-- cardDisplay CLOSE -->
 			
 			<div class="cardDisplay">
-			<div class="flashcardHome">
+			<div class="flashcardHome homepage">
 			<div class="question">
 			<h3>Why use FlashApp?</h3>
 			</br></br>
 			<p>Tap to or hover to learn more!</p>
 			</div> <!-- question div CLOSE -->
 			<div class="answer">
-			<p> The average college student produces 640 pounds of solid waste each year, including roughly 500 disposable cups and 320 pounds of paper. 
+			<p>The average American uses 700 pounds of paper products, per person, per year. That's a wild statistic. Flashcards are an awesome way to prepare for an exam. It's 2018 though, so use the app.</p>  
 			</br>
-			Flashcards are an awesome way to prepare for any exam. However, they're only good for one time use. Even recycling has its flaws.
 			
 			</div> <!-- answer div CLOSE -->
 			</div> <!-- flashcardHome CLOSE -->

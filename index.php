@@ -190,7 +190,7 @@ switch($action) {
 		$noFlashcards = true;	
 	}}
 	include("loggedInHome.php");
-	var_dump($flashcards);
+	//var_dump($flashcards);
 	break;
 	
 	case "Add Cards":
@@ -201,7 +201,7 @@ switch($action) {
 	}
 	else {
 	$_SESSION["category"] = $category;
-	var_dump($_SESSION["category"]);
+	//var_dump($_SESSION["category"]);
 	include("createFlashcards.php");
 	}
 	break;
@@ -215,13 +215,13 @@ switch($action) {
 		$category_name = true;
 	include("loggedInHome.php");
 	}
-	var_dump($category);
+	//var_dump($category);
 	break;
 	
 	case "Update Category":
 	$hi = updateCategoryName($db, $editCatText, $editName_id);
 	include("loggedInHome.php");
-	var_dump($hi);
+	//var_dump($hi);
 	break;
 	
 	//error check for blank field
@@ -252,7 +252,7 @@ switch($action) {
 		include("homepage.php");
 		
 	}
-	var_dump($_SESSION["user_name"]);
+	//var_dump($_SESSION["user_name"]);
 	break;
 	
 	//dropdown list
@@ -270,7 +270,7 @@ switch($action) {
 	foreach($flashcards as $flashcard) {
 	}
 	$buttonUpdate = true;
-	var_dump($c_id);
+	//var_dump($c_id);
 	include_once("createFlashcards.php");
 	break;
 	
@@ -288,6 +288,8 @@ switch($action) {
 	}
 	if($fieldError == false) {
 	addFlashcard($db, $_SESSION["category"], $question, $answer);
+	$_POST['question'] = "";
+	$_POST['answer'] = "";
 	}
 	include_once("createFlashcards.php");
 	break;
@@ -324,8 +326,8 @@ switch($action) {
 	//var_dump($category);
 	include("loggedInHome.php");
 	//$category === $category;
-	var_dump($editCat_id);
-	var_dump($flashcards);
+	//var_dump($editCat_id);
+	//var_dump($flashcards);
 	break;
 	
 	//delete
@@ -337,14 +339,14 @@ switch($action) {
 	}
 	else {
 	$_SESSION["category"] = $category;
-	var_dump($_SESSION["category"]);
+	//var_dump($_SESSION["category"]);
 	include("deleteCat.php");
 	}
 	break;
 	
 	case "Yes":
 	$help = deleteCategory($db, $_SESSION["category"], $_SESSION["customer_id"]);
-	var_dump($help);
+	//var_dump($help);
 	include("loggedInHome.php");
 	break;
 	
@@ -366,7 +368,7 @@ switch($action) {
 	case "Add Cards to Category":
 	$categoryAdd_id = getCatIdFromName($db, $hiddenCatName, $_SESSION["customer_id"]);
 	$_SESSION["category"] = $categoryAdd_id;
-	var_dump ($_SESSION["category"]);
+	//var_dump ($_SESSION["category"]);
 	include("createFlashcards.php");
 	break;
 	

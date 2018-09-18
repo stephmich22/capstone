@@ -133,7 +133,8 @@ global $blankA;
 		</br>
 		<textarea placeholder="Question" name="question" value=""><?php if(isset($flashcard['question'])){
 			echo $flashcard['question'];
-			} ?></textarea></br>
+			}
+			if(isset($_POST['question']))echo $_POST['question'];?></textarea></br>
 			<?php if($blankQ == true) {
 			echo "<p>Please enter a question</p>";
 		}?>
@@ -145,7 +146,8 @@ global $blankA;
 		</br>
 		<textarea placeholder="Answer" name="answer" value=""><?php if(isset($flashcard['answer'])) {
 			echo $flashcard['answer'];
-		}			?></textarea></br>
+		}	
+		if(isset($_POST['answer']))echo $_POST['answer'];		?></textarea></br>
 		<?php if($blankA == true) {
 			echo "<p>Please enter an answer</p>";
 		}?>
